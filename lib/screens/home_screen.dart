@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon/widgets/menu.dart';
 
@@ -10,20 +8,15 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Screen'),
+        title: const Text('Pokedex'),
         centerTitle: true,
         leadingWidth: 40,
         toolbarHeight: 80,
+        shadowColor: Colors.deepPurple,
+        elevation: 5,
       ),
       drawer: Menu(),
-      body: const Center(child: Text('Hola mundo')),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.plus_one),
-        onPressed: () {
-          log('click button');
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      body: const Center(child: Text('Aca va algun List View con los pokemon y elementos')),
     );
   }
 }
