@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon/screens/home_screen.dart';
+import 'package:flutter_pokemon/screens/pokemon_list.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
 
  @override
   Widget build(BuildContext context) {
-    // final tema = Provider.of<ThemeProvider>(context, listen: true);
+    // final tema = Provider.of<ThemeProvider>(context, listen: true); /* esto es lo de  */
     return MaterialApp(
         //debugShowCheckedModeBanner: false,
         initialRoute: 'home',
@@ -24,25 +25,8 @@ class MyApp extends StatelessWidget {
 
         routes: {
           'home': (context) => const HomeScreen(),
+          'pokemon_list': (context) => const PokemonList(),
           }
         );
-
-    /*return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Screen'),
-        centerTitle: true,
-        leadingWidth: 40,
-        toolbarHeight: 80,
-      ),
-      drawer: Menu(),
-      body: const Center(child: Text('Hola mundo')),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.plus_one),
-        onPressed: () {
-          log('click button');
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-    );*/
   }
 }

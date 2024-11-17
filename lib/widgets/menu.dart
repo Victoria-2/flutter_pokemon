@@ -4,6 +4,7 @@ class Menu extends StatelessWidget {
   final List<Map<String, String>> _menuItems = <Map<String, String>>[
     {'route': 'home', 'title': 'Home', 'subtitle': 'Pagina Principal'},
     //en route va como esta escrito en el home
+    {'route': 'pokemon_list', 'title': 'Pokemones', 'subtitle': 'Lista paginada'},
   ];
 
   Menu({super.key});
