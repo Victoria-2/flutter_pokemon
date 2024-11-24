@@ -16,7 +16,22 @@ class PokemonList extends StatelessWidget {
         elevation: 5,
       ),
       drawer: Menu(),
-      body: const Center(child: Text('traer la lista pokemon')),
+      body: listarPokemones()
+    );
+  }
+
+  GridView listarPokemones() {
+    return GridView.count(
+      crossAxisCount: 2,
+      
+      children: List.generate(50, (index) { // aca poner el listview builder
+        return Center(
+          child: Text(
+            'Item $index',
+          ),
+          );
+      },
+      ),
     );
   }
 }
