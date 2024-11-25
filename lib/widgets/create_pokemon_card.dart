@@ -43,13 +43,13 @@ class PokemonCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(name),
-                      Row(
+                      /*Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text('XP: '), // quiero que tenga una imagen que sea re tierna
                           Text('$xp'),
                         ],
-                      )
+                      )*/
                     ]
                   ),
                 ),
