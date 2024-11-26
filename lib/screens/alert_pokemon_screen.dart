@@ -2,9 +2,34 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_pokemon/widgets/create_poke_alert.dart';
 
 class PokemonAlertScreen extends StatelessWidget {
   const PokemonAlertScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  shape: const StadiumBorder(),
+                  elevation: 10),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                child: Text('Mostrar alerta', style: TextStyle(fontSize: 16)),
+              ),
+              //  onPressed: () => displayDialogAndroid( context )
+              onPressed: () => Platform.isAndroid
+                  ? displayDialogAndroid(context)
+                  : displayDialogIOS(context))),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.close),
+          onPressed: () => Navigator.pop(context)),
+    );
+  }
 
   void displayDialogIOS(BuildContext context) {
     showCupertinoDialog(
@@ -45,7 +70,8 @@ class PokemonAlertScreen extends StatelessWidget {
             content: const Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Este es el contenido de la alerta'),
+                //Text('Este es el contenido de la alerta'),
+                // PokemonAlert(), /* SE ME TIENE QUE PASAR EN CUAL SE CLIQUEO INDIVIDUALMENTE */
                 SizedBox(height: 10),
                 FlutterLogo(size: 50)
               ],
@@ -63,27 +89,5 @@ class PokemonAlertScreen extends StatelessWidget {
         });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                  shape: const StadiumBorder(),
-                  elevation: 10),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                child: Text('Mostrar alerta', style: TextStyle(fontSize: 16)),
-              ),
-              //  onPressed: () => displayDialogAndroid( context )
-              onPressed: () => Platform.isAndroid
-                  ? displayDialogAndroid(context)
-                  : displayDialogIOS(context))),
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.close),
-          onPressed: () => Navigator.pop(context)),
-    );
-  }
+  
 }
