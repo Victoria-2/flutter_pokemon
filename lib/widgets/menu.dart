@@ -5,6 +5,7 @@ class Menu extends StatelessWidget {
     {'route': 'home', 'title': 'Home', 'subtitle': 'Pagina Principal'},
     //en route va como esta escrito en el home
     {'route': 'pokemon_list', 'title': 'Pokemones', 'subtitle': 'Lista paginada'},
+    {'route': 'alert_pokemon_screen', 'title': 'Poke - alerta', 'subtitle': 'Es de prueba'},
   ];
 
   Menu({super.key});

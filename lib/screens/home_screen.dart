@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
       drawer: Menu(),
       body: Column( // para poner mas de una lista de cosas
       children: [
-        //agregar un acrrusel
+        //agregar un carrusel de imagenes
         HorizontalSwipper(size: size)
       ],
       )
@@ -33,6 +33,9 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+
+
+// swippers
 class HorizontalSwipper extends StatelessWidget {
   const HorizontalSwipper({
     super.key,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokemon/screens/alert_pokemon_screen.dart';
 import 'package:flutter_pokemon/screens/home_screen.dart';
 import 'package:flutter_pokemon/screens/pokemon_list.dart';
 
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         routes: {
           'home': (context) => const HomeScreen(),
           'pokemon_list': (context) => const PokemonList(),
+          'alert_pokemon_screen': (context) => const PokemonAlertScreen(),
           }
         );
   }
