@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokemon/screens/habilidades_screen.dart';
 import 'package:flutter_pokemon/screens/home_screen.dart';
 import 'package:flutter_pokemon/screens/pokemon_list.dart';
+import 'package:flutter_pokemon/screens/profile_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +27,9 @@ class MyApp extends StatelessWidget {
 
         routes: {
           'home': (context) => const HomeScreen(),
+          'profile_screen': (context) => const ProfileScreen(),
           'pokemon_list': (context) => const PokemonList(),
+          'habilidades_screen': (context) => const PokemonListScreen(),
           }
         );
   }
