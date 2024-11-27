@@ -10,12 +10,33 @@ class PokemonAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return contenidoAlerta(id: id, sprite: sprite, name: name, xp: xp);
+    return AlertDialog(
+      elevation: 5,
+      title: const Text('Información del Pokémon'),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusDirectional.circular(10),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ContenidoPokeAlerta(id: id, sprite: sprite, name: name, xp: xp), // Asegúrate de pasar los datos correctos
+          SizedBox(height: 10),
+        ],
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(); // Cierra el diálogo
+          },
+          child: Text('Volver'),
+        ),
+      ],
+    );
   }
 }
 
-class contenidoAlerta extends StatelessWidget {
-  const contenidoAlerta({
+class ContenidoPokeAlerta extends StatelessWidget {
+  const ContenidoPokeAlerta({
     super.key,
     required this.id,
     required this.sprite,
@@ -49,34 +70,19 @@ class contenidoAlerta extends StatelessWidget {
                 width: 150,
                 fit: BoxFit.contain,
               ),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    color: Colors.blue[200],
-                    border: Border.all(
-                  ),
-                  borderRadius: BorderRadius.circular(10)
-              ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(name),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('XP: '), // quiero que tenga una imagen que sea re tierna
-                          Text('$xp'),
-                        ],
-                      )
-                    ]
-                  ),
-                ),
-              )
-            ],
-          ),
-      ),
+              SizedBox(height: 10),
+              Text(name, style: TextStyle(fontSize: 18)),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                Text('XP: ', style: TextStyle(fontSize: 16)),
+                Text('$xp', style: TextStyle(fontSize: 16)),
+          ],
+        ),
+      ],
+      )
+      )
     );
   }
 }
