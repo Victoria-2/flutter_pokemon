@@ -4,6 +4,7 @@ import 'package:flutter_pokemon/widgets/create_pokemon_card.dart';
 import 'package:flutter_pokemon/widgets/menu.dart';
 import 'dart:developer';
 import 'package:flutter_pokemon/mocks/pokemon_mock.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -26,6 +27,7 @@ class HomeScreen extends StatelessWidget {
       body: Column( // para poner mas de una lista de cosas
       children: [
         //agregar un carrusel de imagenes
+        CarusselImagenes(),
         HorizontalSwipper(size: size)
       ],
       )
@@ -33,6 +35,30 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+//carrusel de imagenes
+class CarusselImagenes extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider(
+          items: [
+            // Aquí agregamos las imágenes o widgets que quieres mostrar
+            Image.asset('assets/img/logo.png'),
+            Image.asset('assets/icon_pokeball.png'),
+            // Puedes agregar cualquier widget como íconos, textos, etc.
+            //Text('Imagen 1', style: TextStyle(color: Colors.white)),
+            //Text('Imagen 2', style: TextStyle(color: Colors.white)),
+          ],
+          options: CarouselOptions(
+            height: 400,  // Altura del carrusel
+            enlargeCenterPage: true,  // Hace que el ítem central se agrande
+            autoPlay: true,  // Hace que el carrusel cambie automáticamente
+            enableInfiniteScroll: true,  // Habilita el desplazamiento infinito
+            autoPlayInterval: Duration(seconds: 3),  // Intervalo de tiempo entre imágenes
+            viewportFraction: 0.8,  // Ajusta el tamaño de la imagen visible
+          )
+    );
+  }
+}
 
 
 // swippers
