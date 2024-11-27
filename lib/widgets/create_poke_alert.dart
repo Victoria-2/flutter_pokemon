@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/*class PokemonAlert extends StatelessWidget {
+class PokemonAlert extends StatelessWidget {
   int indexP;
   
   int id;
@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
   int xp;
   String sprite;
 
-  PokemonAlert({super.key, required this.id, required this.name, required this.xp, required this.sprite});
+  PokemonAlert({super.key, required this.indexP,required this.id, required this.name, required this.xp, required this.sprite});
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +45,13 @@ import 'package:flutter/material.dart';
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(name),
-                      /*Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text('XP: '), // quiero que tenga una imagen que sea re tierna
                           Text('$xp'),
                         ],
-                      )*/
+                      )
                     ]
                   ),
                 ),
@@ -61,4 +61,4 @@ import 'package:flutter/material.dart';
       ),
     );
   }
-}*/
+}

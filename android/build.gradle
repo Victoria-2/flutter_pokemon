@@ -1,18 +1,41 @@
+// Este bloque contiene la configuración de los repositorios y el plugin de Gradle.
+buildscript {
+    ext {
+        // Definir la versión de Kotlin (si es necesario)
+        kotlin_version = '1.8.10'  // Asegúrate de tener la versión adecuada
+    }
+    repositories {
+        google()  // Repositorio para dependencias de Android
+        mavenCentral()  // Repositorio para dependencias de terceros
+    }
+    dependencies {
+        // Plugin de Android Gradle. Asegúrate de usar una versión compatible.
+        classpath 'com.android.tools.build:gradle:7.0.4'  // O la última versión compatible
+        // Si usas Kotlin, asegúrate de que esté configurado.
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        
+    }
+}
+
 allprojects {
     repositories {
-        google()
-        mavenCentral()
+        google()  // Repositorio para dependencias de Android
+        mavenCentral()  // Repositorio para dependencias de terceros
     }
 }
 
 rootProject.buildDir = "../build"
+
+// Configuración para los subproyectos (en caso de que tengas más módulos en tu proyecto).
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// Tarea para limpiar el proyecto (limpiar los archivos generados durante la compilación).
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
