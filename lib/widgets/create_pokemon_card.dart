@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 class PokemonCard extends StatelessWidget {
   int id;
   String name;
-  int xp;
   String sprite;
 
-  PokemonCard({super.key, required this.id, required this.name, required this.xp, required this.sprite});
+  PokemonCard({super.key, required this.id, required this.name, required this.sprite});
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +24,14 @@ class PokemonCard extends StatelessWidget {
               FadeInImage.assetNetwork(
                 placeholder: 'assets/loading_pokeball.gif',
                 image: sprite,
-                height: 150,
-                width: 150,
+                height: 100,
+                width: 100,
                 fit: BoxFit.contain,
               ),
               Expanded(
                 child: Container(
                   width: double.infinity,
-                  height: 70,
+                  height: 45,
                   decoration: BoxDecoration(
                     color: Colors.blue[200],
                     border: Border.all(
@@ -43,13 +42,6 @@ class PokemonCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(name),
-                      /*Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('XP: '), // quiero que tenga una imagen que sea re tierna
-                          Text('$xp'),
-                        ],
-                      )*/
                     ]
                   ),
                 ),

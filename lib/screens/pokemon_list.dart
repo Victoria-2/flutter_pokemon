@@ -29,10 +29,10 @@ class PokemonList extends StatelessWidget {
       var pokemon = elements[index];
       int id = pokemon[0];
       String name = pokemon[1];
-      int xp = pokemon[2];
+      //int xp = pokemon[2];
       String sprite = pokemon[3];
 
-      return PokemonCard(id: id, name: name, xp: xp, sprite: sprite);
+      return PokemonCard(id: id, name: name, sprite: sprite);
     }),
   );
 }
