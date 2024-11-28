@@ -1,11 +1,11 @@
-import 'dart:convert'; // Para trabajar con JSON
+import 'dart:convert'; 
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http; // Paquete HTTP
+import 'package:http/http.dart' as http; 
 
 class PokemonApiService {
   static const String _baseUrl = 'https://pokeapi.co/api/v2';
 
-  /// Obtiene los movimientos de los Pokémon
+  
   Future<List<String>> getPokemonMoves() async {
     final url = Uri.parse('$_baseUrl/move?limit=50');
     try {
@@ -21,13 +21,12 @@ class PokemonApiService {
       }
     } catch (e) {
       if (kDebugMode) {
-        print('Error: $e');
       }
       return [];
     }
   }
 
-  /// Obtiene detalles de un movimiento por ID
+  
   Future<Map<String, dynamic>> getMoveById(int id) async {
     final url = Uri.parse('$_baseUrl/move/$id');
     try {
@@ -46,7 +45,7 @@ class PokemonApiService {
     }
   }
 
-  /// Obtiene los movimientos filtrados por tipo
+  
   Future<List<Map<String, dynamic>>> getMovesByType(String type) async {
     final url = Uri.parse('$_baseUrl/move?limit=100');
     try {
@@ -103,7 +102,6 @@ class PokemonApiService {
                 'number': pokemon['id'],
                 'image': pokemon['sprites']['front_default'],
                 'moves': pokemon['moves']
-                    .take(2) // Tomar solo los dos primeros movimientos
                     .map((move) => move['move']['name'])
                     .toList(),
               })

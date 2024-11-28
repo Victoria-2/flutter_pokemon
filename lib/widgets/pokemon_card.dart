@@ -25,7 +25,7 @@ class PokemonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Ruta del SVG basado en el tipo
-    String typeSvgPath = 'assets/img/${type.toLowerCase()}.svg';
+    String typeSvgPath = 'assets/${type.toLowerCase()}.svg';
 
     return GestureDetector(
       onTap: () {
@@ -37,6 +37,8 @@ class PokemonCard extends StatelessWidget {
               name: name,
               type: type,
               image: image,
+              number: number,
+              moves: const [],
             ),
           ),
         );
