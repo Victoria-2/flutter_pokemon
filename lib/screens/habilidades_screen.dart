@@ -15,9 +15,9 @@ class PokemonListScreenState extends State<PokemonListScreen> {
   bool _isLoading = true;
 
   final Map<String, Color> typeColors = {
-    'fire': Colors.redAccent,
+    'fire': const Color.fromARGB(255, 255, 109, 90),
     'water': Colors.blueAccent,
-    'grass': Colors.greenAccent,
+    'grass': const Color.fromARGB(255, 37, 139, 90),
     'electric': Colors.yellowAccent,
     'psychic': Colors.purpleAccent,
     'normal': Colors.grey,

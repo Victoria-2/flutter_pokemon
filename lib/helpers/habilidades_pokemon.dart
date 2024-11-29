@@ -78,8 +78,8 @@ class PokemonApiService {
   }
   
 
-  Future<List<Map<String, dynamic>>> getAllPokemon() async {
-  final url = Uri.parse('$_baseUrl/pokemon?limit=100');
+Future<List<Map<String, dynamic>>> getAllPokemon() async {
+  final url = Uri.parse('https://pokeapi.co/api/v2/pokemon?limit=100');
   try {
     final response = await http.get(url);
 
@@ -87,24 +87,28 @@ class PokemonApiService {
       final data = jsonDecode(response.body);
       final List results = data['results'];
 
+      // Obtenemos los detalles de cada Pokémon
       final detailedPokemon = await Future.wait(results.map((pokemon) async {
         final detailResponse = await http.get(Uri.parse(pokemon['url']));
-        return detailResponse.statusCode == 200
-            ? jsonDecode(detailResponse.body)
-            : null;
+        if (detailResponse.statusCode == 200) {
+          final detailData = jsonDecode(detailResponse.body);
+          return {
+            'name': detailData['name'],
+            'type': detailData['types'][0]['type']['name'],
+            'number': detailData['id'],
+            'image': detailData['sprites']['front_default'],
+            'moves': (detailData['moves'] as List)
+                .map((move) => move['move']['name'].toString())
+                .toList(),
+          };
+        }
+        return null; // Si no se puede obtener el detalle, devolvemos null
       }));
 
+      // Filtrar y convertir a una lista del tipo correcto
       return detailedPokemon
-          .where((pokemon) => pokemon != null)
-          .map((pokemon) => {
-                'name': pokemon['name'],
-                'type': pokemon['types'][0]['type']['name'],
-                'number': pokemon['id'],
-                'image': pokemon['sprites']['front_default'],
-                'moves': pokemon['moves']
-                    .map((move) => move['move']['name'])
-                    .toList(),
-              })
+          .where((pokemon) => pokemon != null) // Filtrar valores nulos
+          .cast<Map<String, dynamic>>() // Cast explícito para garantizar el tipo
           .toList();
     } else {
       throw Exception('Error al obtener Pokémon');
