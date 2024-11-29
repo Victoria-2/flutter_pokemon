@@ -69,7 +69,7 @@ void _PokemonAlert(BuildContext context, int id, String name, String sprite, int
     context: context,
     builder: (BuildContext context) {
       return PokemonAlert(
-        id: id,  // Usa los parámetros pasados
+        id: id,  
         name: name,
         sprite: sprite,
         xp: xp,

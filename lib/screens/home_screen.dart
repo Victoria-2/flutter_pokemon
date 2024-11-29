@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
       body: Column(
       children: [
         CarusselImagenes(size: size),
-        Divider(thickness: 3,),
+        Divider(thickness: 3),
         Padding(
           padding: EdgeInsets.all(10),
           child: HorizontalSwipper(size: size)

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokemon/helpers/pokemon_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class PokemonAlert extends StatelessWidget {
+class PokemonAlert extends StatefulWidget {
   int id;
   String name;
   int xp;
@@ -9,6 +10,38 @@ class PokemonAlert extends StatelessWidget {
 
   PokemonAlert({super.key, required this.id, required this.name, required this.xp, required this.sprite});
 
+  @override
+  State<PokemonAlert> createState() => _PokemonAlertState();
+}
+
+class _PokemonAlertState extends State<PokemonAlert> {
+  late bool isFavourite;
+  late String apodo;
+
+  final TextEditingController _apodoController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    isFavourite = PokemonPreferences.isFavourite(widget.id);
+    apodo = PokemonPreferences.getApodo(widget.id);
+    _apodoController.text = apodo;
+  }
+  
+  void _onFavouriteChanged(bool value) {
+    setState(() {
+      isFavourite = value;
+    });
+    PokemonPreferences.setFavourite(widget.id, value);
+  }
+
+  void _onApodoChanged(String value) {
+    setState(() {
+      apodo = value;
+    });
+    PokemonPreferences.setApodo(widget.id, value);
+  }  
+  
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -20,8 +53,19 @@ class PokemonAlert extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ContenidoPokeAlerta(id: id, sprite: sprite, name: name, xp: xp), // Asegúrate de pasar los datos correctos
+          ContenidoPokeAlerta(id: widget.id, sprite: widget.sprite, name: widget.name, xp: widget.xp), // Asegúrate de pasar los datos correctos
           SizedBox(height: 10),
+          Divider(thickness: 3),
+                Switch(
+                  value: isFavourite, 
+                  onChanged: _onFavouriteChanged,
+                  ),
+                TextFormField(
+                    controller: _apodoController,
+                    onChanged: _onApodoChanged,
+                    style: GoogleFonts.pressStart2p(fontSize: 12),
+                    decoration: InputDecoration(label: Text('Apodo del Pokemon')),
+                  )
         ],
       ),
       actions: <Widget>[
@@ -36,7 +80,7 @@ class PokemonAlert extends StatelessWidget {
   }
 }
 
-class ContenidoPokeAlerta extends StatelessWidget {
+class ContenidoPokeAlerta extends StatefulWidget {
   const ContenidoPokeAlerta({
     super.key,
     required this.id,
@@ -51,6 +95,11 @@ class ContenidoPokeAlerta extends StatelessWidget {
   final int xp;
 
   @override
+  State<ContenidoPokeAlerta> createState() => _ContenidoPokeAlertaState();
+}
+
+class _ContenidoPokeAlertaState extends State<ContenidoPokeAlerta> {
+  @override
   Widget build(BuildContext context) {
     return Card(
       shadowColor: Colors.purple[400],
@@ -61,25 +110,25 @@ class ContenidoPokeAlerta extends StatelessWidget {
         child: Column(
             children: [
               Text(
-                '#$id',
+                '#${widget.id}',
                 textAlign: TextAlign.start,
                 style: GoogleFonts.pressStart2p(),
                 ),
               FadeInImage.assetNetwork(
                 placeholder: 'assets/loading_pokeball.gif',
-                image: sprite,
+                image: widget.sprite,
                 height: 150,
                 width: 150,
                 fit: BoxFit.contain,
               ),
               SizedBox(height: 10),
-              Text(name, style: GoogleFonts.pressStart2p(fontSize: 18)),
+              Text(widget.name, style: GoogleFonts.pressStart2p(fontSize: 18)),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                 Text('XP: ', style: GoogleFonts.pressStart2p(fontSize: 16)),
-                Text('$xp', style: GoogleFonts.pressStart2p(fontSize: 16)),
+                Text('${widget.xp}', style: GoogleFonts.pressStart2p(fontSize: 16)),
           ],
         ),
       ],
