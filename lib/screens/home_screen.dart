@@ -5,6 +5,7 @@ import 'package:flutter_pokemon/widgets/menu.dart';
 import 'dart:developer';
 import 'package:flutter_pokemon/mocks/pokemon_mock.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -16,7 +17,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pokedex'),
+        title: Text('Pokedex', style: GoogleFonts.pressStart2p(fontSize: 16)),
         centerTitle: true,
         leadingWidth: 40,
         toolbarHeight: 80,
@@ -24,11 +25,14 @@ class HomeScreen extends StatelessWidget {
         elevation: 5,
       ),
       drawer: Menu(),
-      body: Column( // para poner mas de una lista de cosas
+      body: Column(
       children: [
-        //agregar un carrusel de imagenes
-        CarusselImagenes(),
-        HorizontalSwipper(size: size)
+        CarusselImagenes(size: size),
+        Divider(thickness: 3,),
+        Padding(
+          padding: EdgeInsets.all(10),
+          child: HorizontalSwipper(size: size)
+          )
       ],
       )
     );
@@ -37,24 +41,28 @@ class HomeScreen extends StatelessWidget {
 
 //carrusel de imagenes
 class CarusselImagenes extends StatelessWidget {
+  const CarusselImagenes({
+    super.key,
+    required this.size,
+  });
+
+  final Size size;
+
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
           items: [
-            // Aquí agregamos las imágenes o widgets que quieres mostrar
+            // aca van las rutas de las imagenes, fijarme is puedo ponerle el loading
             Image.asset('assets/img/logo.png'),
             Image.asset('assets/icon_pokeball.png'),
-            // Puedes agregar cualquier widget como íconos, textos, etc.
-            //Text('Imagen 1', style: TextStyle(color: Colors.white)),
-            //Text('Imagen 2', style: TextStyle(color: Colors.white)),
           ],
           options: CarouselOptions(
-            height: 400,  // Altura del carrusel
-            enlargeCenterPage: true,  // Hace que el ítem central se agrande
-            autoPlay: true,  // Hace que el carrusel cambie automáticamente
-            enableInfiniteScroll: true,  // Habilita el desplazamiento infinito
-            autoPlayInterval: Duration(seconds: 3),  // Intervalo de tiempo entre imágenes
-            viewportFraction: 0.8,  // Ajusta el tamaño de la imagen visible
+            height: size.height * 0.30, 
+            enlargeCenterPage: true,
+            autoPlay: true,
+            enableInfiniteScroll: true,
+            autoPlayInterval: Duration(seconds: 3),
+            viewportFraction: 0.8, 
           )
     );
   }
@@ -74,7 +82,7 @@ class HorizontalSwipper extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: size.height * 0.5,
+      height: size.height * 0.35,
       child: Column(
         crossAxisAlignment:  CrossAxisAlignment.start,
         children: [
@@ -116,7 +124,7 @@ class SwipperHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('Lista de Pokemones'),
+        Text('Lista de Pokemones', style: GoogleFonts.pressStart2p(fontSize: 12)),
         //SizedBox(width: 200),
         ElevatedButton(
           onPressed: () {
@@ -126,7 +134,7 @@ class SwipperHeader extends StatelessWidget {
           MaterialPageRoute(builder: (context) => PokemonList()),
         );
       },
-          child: Text('Ver todos')
+          child: Text('Ver todos', style: GoogleFonts.pressStart2p(fontSize: 8))
         ),
       ],
     );

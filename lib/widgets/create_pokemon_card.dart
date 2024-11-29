@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon/widgets/create_poke_alert.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PokemonCard extends StatelessWidget {
   int id;
@@ -25,6 +26,7 @@ class PokemonCard extends StatelessWidget {
                   Text(
                     '#$id',
                     textAlign: TextAlign.start,
+                    style: GoogleFonts.pressStart2p(),
                     ),
                   FadeInImage.assetNetwork(
                     placeholder: 'assets/loading_pokeball.gif',
@@ -35,7 +37,7 @@ class PokemonCard extends StatelessWidget {
                   ),
                   Expanded(
                     child: Container(
-                      width: double.infinity,
+                      width: 150,
                       height: 45,
                       decoration: BoxDecoration(
                         color: Colors.blue[200],
@@ -46,7 +48,10 @@ class PokemonCard extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(name),
+                          Text(
+                            name,
+                            style: GoogleFonts.pressStart2p(),
+                            ),
                         ]
                       ),
                     ),

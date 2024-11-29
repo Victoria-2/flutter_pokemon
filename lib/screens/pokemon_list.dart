@@ -18,7 +18,10 @@ class PokemonList extends StatelessWidget {
         elevation: 5,
       ),
       drawer: Menu(),
-      body: listarPokemones()
+      body: Padding(
+        padding: EdgeInsets.all(10),
+        child: listarPokemones()
+        )
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PokemonAlert extends StatelessWidget {
   int id;
@@ -12,7 +13,7 @@ class PokemonAlert extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       elevation: 5,
-      title: const Text('Información del Pokémon'),
+      title: Text('Información del Pokémon', style: GoogleFonts.pressStart2p(fontSize: 16)),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusDirectional.circular(10),
       ),
@@ -28,7 +29,7 @@ class PokemonAlert extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop(); // Cierra el diálogo
           },
-          child: Text('Volver'),
+          child: Text('Volver', style: GoogleFonts.pressStart2p(fontSize: 16)),
         ),
       ],
     );
@@ -62,6 +63,7 @@ class ContenidoPokeAlerta extends StatelessWidget {
               Text(
                 '#$id',
                 textAlign: TextAlign.start,
+                style: GoogleFonts.pressStart2p(),
                 ),
               FadeInImage.assetNetwork(
                 placeholder: 'assets/loading_pokeball.gif',
@@ -71,13 +73,13 @@ class ContenidoPokeAlerta extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
               SizedBox(height: 10),
-              Text(name, style: TextStyle(fontSize: 18)),
+              Text(name, style: GoogleFonts.pressStart2p(fontSize: 18)),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                Text('XP: ', style: TextStyle(fontSize: 16)),
-                Text('$xp', style: TextStyle(fontSize: 16)),
+                Text('XP: ', style: GoogleFonts.pressStart2p(fontSize: 16)),
+                Text('$xp', style: GoogleFonts.pressStart2p(fontSize: 16)),
           ],
         ),
       ],
