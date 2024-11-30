@@ -18,11 +18,15 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pokedex', style: GoogleFonts.pressStart2p(fontSize: 16)),
+        title: Text(
+          'Pokedex', 
+          style: GoogleFonts.pressStart2p(fontSize: 16),
+          ),
         centerTitle: true,
         leadingWidth: 40,
         toolbarHeight: 80,
-        shadowColor: Colors.deepPurple,
+        backgroundColor: Colors.red[400],
+        shadowColor: Colors.purple[400],
         elevation: 5,
       ),
       drawer: Menu(),
