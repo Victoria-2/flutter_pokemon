@@ -3,7 +3,7 @@ import 'package:flutter_pokemon/helpers/pokemon_preferences.dart';
 import 'package:flutter_pokemon/widgets/create_poke_alert.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class PokemonCard extends StatelessWidget {
+class PokemonCard extends StatefulWidget {
   int id;
   String name;
   String sprite;
@@ -12,11 +12,45 @@ class PokemonCard extends StatelessWidget {
   PokemonCard({super.key, required this.id, required this.name, required this.sprite, required this.xp});
 
   @override
+  State<PokemonCard> createState() => _PokemonCardState();
+}
+
+class _PokemonCardState extends State<PokemonCard> with TickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return InkWell( // Color antes de la onda
+    return InkWell(
       onTap: () {
-        _PokemonAlert(context, id, name, sprite, xp); // Muestrar la card individual cuando se toca
+        _animationController.forward().then((_) {
+          _animationController.reverse();
+        });
+        Future.delayed(const Duration(milliseconds: 200), () {
+          _PokemonAlert(context, widget.id, widget.name, widget.sprite, widget.xp);
+        });
       },
+      child: AnimatedBuilder(
+        animation: _scaleAnimation,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: child,
+          );
+        },
       child: Card(
           shadowColor: Colors.purple[400],
           elevation: 10,
@@ -28,16 +62,16 @@ class PokemonCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '#$id',
+                        '#${widget.id}',
                         textAlign: TextAlign.start,
                         style: GoogleFonts.pressStart2p(),
                         ),
-                        _buildFavorite(id),
+                        _buildFavorite(widget.id),
                     ],
                   ),
                   FadeInImage.assetNetwork(
                     placeholder: 'assets/loading_pokeball.gif',
-                    image: sprite,
+                    image: widget.sprite,
                     height: 100,
                     width: 100,
                     fit: BoxFit.contain,
@@ -56,7 +90,7 @@ class PokemonCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            name,
+                            widget.name,
                             style: GoogleFonts.pressStart2p(),
                             ),
                         ],
@@ -67,6 +101,7 @@ class PokemonCard extends StatelessWidget {
               ),
           ),
         ),
+      )
     );
   }
 }
