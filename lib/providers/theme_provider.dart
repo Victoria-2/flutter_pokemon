@@ -1,22 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokemon/helpers/preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ThemeProvider with ChangeNotifier {
-  // Inicializa el tema basado en las preferencias almacenadas
-  ThemeProvider() {
-    _isDarkMode = Preferences.isDarkMode;
+class ThemeProvider extends ChangeNotifier {
+  ThemeData _currentTheme;
+
+  ThemeProvider({bool isDarkMode = false})
+      : _currentTheme =
+            isDarkMode ? ThemeData.dark() : ThemeData.light();
+
+  ThemeData get temaActual => _currentTheme;
+
+  bool get isDarkMode => _currentTheme.brightness == Brightness.dark;
+
+  void toggleTheme() async {
+    _currentTheme =
+        _currentTheme.brightness == Brightness.dark
+            ? ThemeData.light()
+            : ThemeData.dark();
+
+    // Guardar el estado del tema en shared_preferences
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isDarkMode', isDarkMode);
+
+    notifyListeners();
   }
 
-  bool _isDarkMode = false;
-
-  bool get isDarkMode => _isDarkMode;
-
-  void toggleTheme() {
-    _isDarkMode = !_isDarkMode;
-    Preferences.isDarkMode = _isDarkMode; // Guarda el estado en SharedPreferences
-    notifyListeners(); // Notifica a los widgets que usan este provider
+  // Cargar el tema al iniciar la app
+  Future<void> loadTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isDark = prefs.getBool('isDarkMode') ?? false; // Default: Light Mode
+    _currentTheme = isDark ? ThemeData.dark() : ThemeData.light();
+    notifyListeners();
   }
-
-  ThemeData get currentTheme =>
-      _isDarkMode ? ThemeData.dark() : ThemeData.light();
 }

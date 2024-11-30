@@ -62,32 +62,70 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
     _loadPreferences(); // Cargar el favorito y el apodo desde SharedPreferences
   }
 
+  @override
+  void dispose() {
+    _saveFavorite(isFavorite);  // Guarda el estado de favorito
+    _saveApodo(apodoController.text);  // Guarda el apodo
+    apodoController.dispose();  // Libera el controlador de texto
+    super.dispose();  // Llama al dispose de la clase base
+  }
+
   // Método para cargar los datos guardados
   Future<void> _loadPreferences() async {
+    debugPrint('Obteniendo preferencias...');
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
+    debugPrint('Preferencias obtenidas');
+
+    // Depuración: Verificar si las claves existen y mostrar los valores
+    final bool? isFavoriteStored = prefs.containsKey('${widget.name}_favorite') 
+        ? prefs.getBool('${widget.name}_favorite') 
+        : null;
+    final String? apodoStored = prefs.containsKey('${widget.name}_apodo') 
+        ? prefs.getString('${widget.name}_apodo') 
+        : null;
+
+    if (isFavoriteStored != null && apodoStored != null) {
+      debugPrint('Cargado: Favorito: $isFavoriteStored, Apodo: $apodoStored');
+    } else {
+      debugPrint('No se encontraron preferencias para ${widget.name}');
+    }
+
+    // Verificar si el widget aún está montado antes de llamar a setState
+    if (mounted) {
+      setState(() {
       isFavorite = prefs.getBool('${widget.name}_favorite') ?? false;
-      savedApodo = prefs.getString('${widget.name}_apodo');
+      savedApodo = prefs.getString('${widget.name}_apodo') ?? ''; 
       apodoController.text = savedApodo ?? '';
-    });
+      });
+      debugPrint('Cargado: Favorito: $isFavorite, Apodo: $savedApodo');
+    }
   }
 
   // Método para guardar el estado de favorito
   Future<void> _saveFavorite(bool value) async {
     final prefs = await SharedPreferences.getInstance();
+    debugPrint('Guardando para ${widget.name}');
     await prefs.setBool('${widget.name}_favorite', value);
-    setState(() {
-      isFavorite = value;
-    });
+    debugPrint('Guardado Favorito: $value para ${widget.name}');
+
+    if (mounted) {
+      setState(() {
+        isFavorite = value;
+      });
+    }
   }
 
-  // Método para guardar el apodo
   Future<void> _saveApodo(String apodo) async {
     final prefs = await SharedPreferences.getInstance();
+    debugPrint('Guardando para ${widget.name}');
     await prefs.setString('${widget.name}_apodo', apodo);
-    setState(() {
-      savedApodo = apodo;
-    });
+    debugPrint('Guardado Apodo: $apodo para ${widget.name}');
+
+    if (mounted) {
+      setState(() {
+        savedApodo = apodo;  // Esto debería reflejar el cambio en la UI
+      });
+    }
   }
 
   @override
@@ -156,9 +194,9 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                   decoration: const InputDecoration(
                                     hintText: 'Escribe un apodo...',
                                   ),
-                                  onSubmitted: (value) {
-                                    _saveApodo(value);
-                                  },
+                                    onChanged: (value) {
+                                        _saveApodo(value);  // Guardar inmediatamente el cambio en el apodo
+                                      },
                                 ),
                               ),
                               const SizedBox(height: 4),
