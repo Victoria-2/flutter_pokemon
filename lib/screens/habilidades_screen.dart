@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../helpers/habilidades_pokemon.dart';
 import '../widgets/pokemon_card.dart';
+import '../widgets/menu.dart'; // Importa el archivo de menú
 
 class PokemonListScreen extends StatefulWidget {
   const PokemonListScreen({super.key});
@@ -55,6 +56,8 @@ class PokemonListScreenState extends State<PokemonListScreen> {
       appBar: AppBar(
         title: const Text('Lista de Pokémon'),
       ),
+      // Aquí agregamos el Drawer usando tu clase Menu
+      drawer: Menu(), // Aquí es donde agregamos tu menú
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(

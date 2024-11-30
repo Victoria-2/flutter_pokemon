@@ -1,27 +1,14 @@
 import 'package:flutter/material.dart';
 
-class FavoriteCheckbox extends StatefulWidget {
-  final bool initialValue;
+class FavoriteCheckbox extends StatelessWidget {
+  final bool value;
   final ValueChanged<bool> onChanged;
 
   const FavoriteCheckbox({
     super.key,
-    this.initialValue = false,
+    required this.value,
     required this.onChanged,
   });
-
-  @override
-  State<FavoriteCheckbox> createState() => _FavoriteCheckboxState();
-}
-
-class _FavoriteCheckboxState extends State<FavoriteCheckbox> {
-  late bool isFavorite;
-
-  @override
-  void initState() {
-    super.initState();
-    isFavorite = widget.initialValue;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +17,9 @@ class _FavoriteCheckboxState extends State<FavoriteCheckbox> {
       children: [
         const Text('Favorito'),
         Checkbox(
-          value: isFavorite,
+          value: value,
           onChanged: (value) {
-            setState(() {
-              isFavorite = value ?? false;
-            });
-            widget.onChanged(isFavorite);
+            onChanged(value ?? false);
           },
         ),
       ],
