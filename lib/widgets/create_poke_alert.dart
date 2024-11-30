@@ -53,25 +53,40 @@ class _PokemonAlertState extends State<PokemonAlert> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ContenidoPokeAlerta(id: widget.id, sprite: widget.sprite, name: widget.name, xp: widget.xp), // Asegúrate de pasar los datos correctos
-          SizedBox(height: 10),
-          Divider(thickness: 3),
-                Switch(
-                  value: isFavourite, 
-                  onChanged: _onFavouriteChanged,
-                  ),
-                TextFormField(
-                    controller: _apodoController,
-                    onChanged: _onApodoChanged,
-                    style: GoogleFonts.pressStart2p(fontSize: 12),
-                    decoration: InputDecoration(label: Text('Apodo del Pokemon')),
-                  )
+          ContenidoPokeAlerta(id: widget.id, sprite: widget.sprite, name: widget.name, xp: widget.xp),
+          const SizedBox(height: 10),
+          const Divider(thickness: 3),
+          Column(
+            children: [
+              Text(
+                'Agregar a favoritos:',
+                style: GoogleFonts.pressStart2p(fontSize: 12)),
+              Switch(
+                value: isFavourite, 
+                onChanged: _onFavouriteChanged,
+                ),
+            ],
+          ),
+          TextFormField(
+            textAlign: TextAlign.center,
+            controller: _apodoController,
+            onChanged: _onApodoChanged,
+            style: GoogleFonts.pressStart2p(fontSize: 12),
+            decoration: InputDecoration(
+              label: 
+              Text(
+                'Apodo del Pokemon:', 
+                style: GoogleFonts.pressStart2p(fontSize: 14),
+                //agregar algo para que quede centrado este texto
+                )
+                ),
+            )
         ],
       ),
       actions: <Widget>[
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop(); // Cierra el diálogo
+            Navigator.of(context).pop();
           },
           child: Text('Volver', style: GoogleFonts.pressStart2p(fontSize: 16)),
         ),
@@ -109,11 +124,17 @@ class _ContenidoPokeAlertaState extends State<ContenidoPokeAlerta> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
             children: [
-              Text(
-                '#${widget.id}',
-                textAlign: TextAlign.start,
-                style: GoogleFonts.pressStart2p(),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '#${widget.id}',
+                    textAlign: TextAlign.start,
+                    style: GoogleFonts.pressStart2p(),
+                    ),
+                    _buildFavorite(widget.id),
+                ],
+              ),
               FadeInImage.assetNetwork(
                 placeholder: 'assets/loading_pokeball.gif',
                 image: widget.sprite,
@@ -121,9 +142,9 @@ class _ContenidoPokeAlertaState extends State<ContenidoPokeAlerta> {
                 width: 150,
                 fit: BoxFit.contain,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(widget.name, style: GoogleFonts.pressStart2p(fontSize: 18)),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -136,4 +157,14 @@ class _ContenidoPokeAlertaState extends State<ContenidoPokeAlerta> {
       )
     );
   }
+}
+
+Widget _buildFavorite(int id) {
+  bool isFavorite = PokemonPreferences.isFavourite(id);
+
+  return Icon(
+    isFavorite ? Icons.star : Icons.star_border,
+    color: isFavorite ? Colors.yellow : Colors.grey,
+    size: 30,
+  );
 }

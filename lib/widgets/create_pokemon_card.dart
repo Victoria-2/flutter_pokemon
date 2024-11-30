@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokemon/helpers/pokemon_preferences.dart';
 import 'package:flutter_pokemon/widgets/create_poke_alert.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -23,11 +24,17 @@ class PokemonCard extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Column(
                 children: [
-                  Text(
-                    '#$id',
-                    textAlign: TextAlign.start,
-                    style: GoogleFonts.pressStart2p(),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '#$id',
+                        textAlign: TextAlign.start,
+                        style: GoogleFonts.pressStart2p(),
+                        ),
+                        _buildFavorite(id),
+                    ],
+                  ),
                   FadeInImage.assetNetwork(
                     placeholder: 'assets/loading_pokeball.gif',
                     image: sprite,
@@ -52,10 +59,10 @@ class PokemonCard extends StatelessWidget {
                             name,
                             style: GoogleFonts.pressStart2p(),
                             ),
-                        ]
+                        ],
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
           ),
@@ -76,4 +83,16 @@ void _PokemonAlert(BuildContext context, int id, String name, String sprite, int
       );
     },
   );
+
 }
+
+Widget _buildFavorite(int id) {
+  bool isFavorite = PokemonPreferences.isFavourite(id);
+
+  return Icon(
+    isFavorite ? Icons.star : Icons.star_border,
+    color: isFavorite ? Colors.yellow : Colors.grey,
+    size: 30,
+  );
+}
+  

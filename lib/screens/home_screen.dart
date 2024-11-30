@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokemon/helpers/pokemon_preferences.dart';
 import 'package:flutter_pokemon/screens/pokemon_list.dart';
 import 'package:flutter_pokemon/widgets/create_pokemon_card.dart';
 import 'package:flutter_pokemon/widgets/menu.dart';
@@ -25,15 +26,23 @@ class HomeScreen extends StatelessWidget {
         elevation: 5,
       ),
       drawer: Menu(),
-      body: Column(
-      children: [
-        CarusselImagenes(size: size),
-        Divider(thickness: 3),
-        Padding(
-          padding: EdgeInsets.all(10),
-          child: HorizontalSwipper(size: size)
-          )
-      ],
+      body:  SingleChildScrollView(
+        child: Column(
+        children: [
+          CarusselImagenes(size: size),
+          const Divider(thickness: 3),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: HorizontalSwipper(size: size, lista:elements, titulo: 'Lista de Pokemones', vinculo: const PokemonList())
+            ),
+            const Divider(thickness: 3),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: HorizontalSwipper(size: size, lista:PokemonPreferences.getAllFavouritePokemon(), titulo: 'Favoritos', vinculo: null)
+            ),
+            SizedBox(height: 20)
+        ],
+        ),
       )
     );
   }
@@ -74,9 +83,15 @@ class HorizontalSwipper extends StatelessWidget {
   const HorizontalSwipper({
     super.key,
     required this.size,
+    required this.lista,
+    required this.titulo,
+    required this.vinculo,
   });
 
   final Size size;
+  final List lista;
+  final String titulo;
+  final Widget? vinculo;
 
   @override
   Widget build(BuildContext context) {
@@ -88,15 +103,15 @@ class HorizontalSwipper extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.all(8.0),
-            child: SwipperHeader(),
+            child: SwipperHeader(titulo: titulo, vinculo: vinculo),
             ),
           Expanded(
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemCount: elements.length,
+              itemCount: lista.length,
               itemBuilder: (context, index) {
-                var pokemon = elements[index];
+                var pokemon = lista[index];
                 int id = pokemon[0];
                 String name = pokemon[1];
                 int xp = pokemon[2];  
@@ -115,7 +130,12 @@ class HorizontalSwipper extends StatelessWidget {
 class SwipperHeader extends StatelessWidget {
   const SwipperHeader({
     super.key,
+    required this.titulo,
+    required this.vinculo,
   });
+
+  final String titulo;
+  final Widget? vinculo;
 
   //agregarlo de los size y extended
 
@@ -124,14 +144,13 @@ class SwipperHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('Lista de Pokemones', style: GoogleFonts.pressStart2p(fontSize: 12)),
-        //SizedBox(width: 200),
-        ElevatedButton(
+        Text(titulo, style: GoogleFonts.pressStart2p(fontSize: 12)),
+         if (vinculo != null)
+         ElevatedButton(
           onPressed: () {
-        // Navegar a la pantalla de detalles
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => PokemonList()),
+          MaterialPageRoute(builder: (context) => vinculo!),
         );
       },
           child: Text('Ver todos', style: GoogleFonts.pressStart2p(fontSize: 8))
