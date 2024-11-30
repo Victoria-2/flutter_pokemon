@@ -13,9 +13,7 @@ class PokemonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      splashColor: Colors.red, // Color de la onda
-      highlightColor: Colors.blue, // Color antes de la onda
+    return InkWell( // Color antes de la onda
       onTap: () {
         _PokemonAlert(context, id, name, sprite, xp); // Muestrar la card individual cuando se toca
       },
