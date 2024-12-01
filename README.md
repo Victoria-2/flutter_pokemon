@@ -105,7 +105,7 @@ Es una screen en donde se muestra en un grid de 2 columnas todos los Pokemon del
 ![image](https://github.com/user-attachments/assets/440ec660-5a53-4115-93b3-6798b571e3b8)
 <br>
 Es un Stateful Widget el cual cuando se llama con sus parametros correspondientes (id, name, sprite, xp) organiza esta información en una tarjeta, sumado a si anteriormente agregamos el Pokemon a favoritos o no.
-Cuando se presiona sobre uno de los Pokemon, se realiza una pequeña animación y luego de muerta llama a 'PokemonAlert' para mostrar la información específica.
+Cuando se presiona sobre uno de los Pokemon, se realiza una pequeña animación y luego de mostrarlo llama a 'PokemonAlert' para mostrar la información específica.
 <br>
 ![image](https://github.com/user-attachments/assets/92af8030-5cc7-48c4-a634-a3f70475f632)
 
