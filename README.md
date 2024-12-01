@@ -117,6 +117,7 @@ Se forma una card en base a create_pokemon_card con la diferencia de que se mues
 <br>
 ![image](https://github.com/user-attachments/assets/5feae488-c5a2-4e94-98da-1e1bd36f0a4b)
 
+---
 
 
 
