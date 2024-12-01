@@ -52,7 +52,57 @@ tag.id                           google_apis_playstore
 tag.ids                          google_apis_playstore
 vm.heapSize                      336
 
-- El dispositivo utilizado por Emiliano fue: ..
+- El dispositivo utilizado por Emiliano fue: Medium Phone Api 35
+  - Properties:
+avd.ini.displayname              Medium Phone API 35
+avd.ini.encoding                 UTF-8
+AvdId                            Medium_Phone_API_35
+disk.dataPartition.size          6442450944
+fastboot.chosenSnapshotFile      
+fastboot.forceChosenSnapshotBoot no
+fastboot.forceColdBoot           no
+fastboot.forceFastBoot           yes
+hw.accelerometer                 yes
+hw.arc                           false
+hw.audioInput                    yes
+hw.battery                       yes
+hw.camera.back                   virtualscene
+hw.camera.front                  emulated
+hw.cpu.ncore                     8
+hw.device.hash2                  MD5:3db3250dab5d0d93b29353040181c7e9
+hw.device.manufacturer           Generic
+hw.device.name                   medium_phone
+hw.dPad                          no
+hw.gps                           yes
+hw.gpu.enabled                   yes
+hw.gpu.mode                      auto
+hw.initialOrientation            portrait
+hw.keyboard                      yes
+hw.lcd.density                   420
+hw.lcd.height                    2400
+hw.lcd.width                     1080
+hw.mainKeys                      no
+hw.ramSize                       2G
+hw.sdCard                        yes
+hw.sensors.orientation           yes
+hw.sensors.proximity             yes
+hw.trackBall                     no
+image.androidVersion.api         35
+image.sysdir.1                   system-images\android-35\google_apis_playstore\x86_64\
+PlayStore.enabled                true
+runtime.network.latency          none
+runtime.network.speed            full
+showDeviceFrame                  yes
+skin.dynamic                     yes
+tag.display                      Google Play
+tag.displaynames                 Google Play
+tag.id                           google_apis_playstore
+tag.ids                          google_apis_playstore
+vm.heapSize                      336 -Google Emulator
+-Celular Motorola G-52
+
+
+
 
 > [!IMPORTANT]
 > Utilizamos JDK 17 y fue seteado únicamente para este proyecto con 'flutter config --jdk-dir=DIRECTORY'
@@ -67,6 +117,10 @@ vm.heapSize                      336
    - create_poke_alert
      
 * Archivos utilizdos por Emiliano:
+   - habilidades_pokemon,
+   - habilidades_screen,
+   - pokemon_card,
+   - pokemon_detail_screen
   
 * Globales:
    - home_screen,
@@ -117,7 +171,26 @@ Se forma una card en base a create_pokemon_card con la diferencia de que se mues
 <br>
 ![image](https://github.com/user-attachments/assets/5feae488-c5a2-4e94-98da-1e1bd36f0a4b)
 
----
+### Emiliano Cortez
+### habilidades_pokemon
+Se hizo un llamado a la API de Pokémon utilizando el paquete http de Flutter para obtener datos de movimientos y detalles de Pokémon. Se realizó una solicitud GET a la URL de la API, se procesó la respuesta en formato JSON y se tomaron los datos como el nombre, tipo y movimientos de los Pokémon.
+<br>
+
+### habilidades_screen
+Se implementó una pantalla en Flutter que muestra una lista de Pokémon utilizando un ListView.builder. Los datos se obtienen desde un servicio de API, se procesan y se renderizan en tarjetas personalizadas (PokemonCard), con colores según el tipo de Pokémon.
+<br>
+
+### pokemon_card
+Se creó un widget personalizado (PokemonCard) que muestra la información de un Pokémon en una tarjeta estilizada con colores y un ícono SVG basado en su tipo. Al tocar la tarjeta, se navega a una pantalla de detalles del Pokémon
+<br>
+![Imagen](https://github.com/user-attachments/assets/390060b6-e01e-40e8-ac27-cefbfca3ea50)
+
+### pokemon_detail_screen
+Pantalla dinamica detallada con cada pokemon que permite personalizar apodos y guardar tu pokemon favorito utilizando shared preferences
+<br>
+![Imagen](https://github.com/user-attachments/assets/d79af76c-66f8-4f23-894d-c6beafaf5c52)
+
+
 
 
 
