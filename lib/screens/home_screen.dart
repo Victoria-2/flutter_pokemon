@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokemon/helpers/pokemon_preferences.dart';
 import 'package:flutter_pokemon/screens/pokemon_list.dart';
 import 'package:flutter_pokemon/widgets/create_pokemon_card.dart';
 import 'package:flutter_pokemon/widgets/menu.dart';
 import 'dart:developer';
 import 'package:flutter_pokemon/mocks/pokemon_mock.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -15,29 +18,43 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pokedex'),
+        title: Text(
+          'Pokedex', 
+          style: GoogleFonts.pressStart2p(fontSize: 16),
+          ),
         centerTitle: true,
         leadingWidth: 40,
         toolbarHeight: 80,
-        shadowColor: Colors.deepPurple,
+        backgroundColor: Colors.red[400],
+        shadowColor: Colors.purple[400],
         elevation: 5,
       ),
       drawer: Menu(),
-      body: Column( // para poner mas de una lista de cosas
-      children: [
-        //agregar un carrusel de imagenes
-        HorizontalSwipper(size: size)
-      ],
+      body:  SingleChildScrollView(
+        child: Column(
+        children: [
+          CarusselImagenes(size: size),
+          const Divider(thickness: 3),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: HorizontalSwipper(size: size, lista:elements, titulo: 'Lista de Pokemones', vinculo: const PokemonList())
+            ),
+            const Divider(thickness: 3),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: HorizontalSwipper(size: size, lista:PokemonPreferences.getAllFavouritePokemon(), titulo: 'Favoritos', vinculo: null)
+            ),
+            SizedBox(height: 20)
+        ],
+        ),
       )
     );
   }
 }
 
-
-
-// swippers
-class HorizontalSwipper extends StatelessWidget {
-  const HorizontalSwipper({
+//carrusel de imagenes
+class CarusselImagenes extends StatelessWidget {
+  const CarusselImagenes({
     super.key,
     required this.size,
   });
@@ -46,29 +63,65 @@ class HorizontalSwipper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return CarouselSlider(
+          items: [
+            // aca van las rutas de las imagenes, fijarme is puedo ponerle el loading
+            Image.asset('assets/img/logo.png'),
+            Image.asset('assets/icon_pokeball.png'),
+          ],
+          options: CarouselOptions(
+            height: size.height * 0.30, 
+            enlargeCenterPage: true,
+            autoPlay: true,
+            enableInfiniteScroll: true,
+            autoPlayInterval: Duration(seconds: 3),
+            viewportFraction: 0.8, 
+          )
+    );
+  }
+}
+
+
+// swippers
+class HorizontalSwipper extends StatelessWidget {
+  const HorizontalSwipper({
+    super.key,
+    required this.size,
+    required this.lista,
+    required this.titulo,
+    required this.vinculo,
+  });
+
+  final Size size;
+  final List lista;
+  final String titulo;
+  final Widget? vinculo;
+
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: size.height * 0.5,
+      height: size.height * 0.35,
       child: Column(
         crossAxisAlignment:  CrossAxisAlignment.start,
         children: [
           Padding(
             padding: EdgeInsets.all(8.0),
-            child: SwipperHeader(),
+            child: SwipperHeader(titulo: titulo, vinculo: vinculo),
             ),
           Expanded(
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemCount: elements.length,
+              itemCount: lista.length,
               itemBuilder: (context, index) {
-                var pokemon = elements[index];
+                var pokemon = lista[index];
                 int id = pokemon[0];
                 String name = pokemon[1];
                 int xp = pokemon[2];  
                 String sprite = pokemon[3];
                 
-                return PokemonCard(id: id, name: name, xp: xp, sprite: sprite);
+                return PokemonCard(id: id, name: name, sprite: sprite, xp: xp);
               },
             )
             )
@@ -81,7 +134,12 @@ class HorizontalSwipper extends StatelessWidget {
 class SwipperHeader extends StatelessWidget {
   const SwipperHeader({
     super.key,
+    required this.titulo,
+    required this.vinculo,
   });
+
+  final String titulo;
+  final Widget? vinculo;
 
   //agregarlo de los size y extended
 
@@ -90,17 +148,16 @@ class SwipperHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('Lista de Pokemones'),
-        //SizedBox(width: 200),
-        ElevatedButton(
+        Text(titulo, style: GoogleFonts.pressStart2p(fontSize: 12)),
+         if (vinculo != null)
+         ElevatedButton(
           onPressed: () {
-        // Navegar a la pantalla de detalles
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => PokemonList()),
+          MaterialPageRoute(builder: (context) => vinculo!),
         );
       },
-          child: Text('Ver todos')
+          child: Text('Ver todos', style: GoogleFonts.pressStart2p(fontSize: 8))
         ),
       ],
     );

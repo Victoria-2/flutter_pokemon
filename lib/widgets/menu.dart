@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Menu extends StatelessWidget {
   final List<Map<String, String>> _menuItems = <Map<String, String>>[
     {'route': 'home', 'title': 'Home', 'subtitle': 'Pagina Principal'},
     //en route va como esta escrito en el home
     {'route': 'pokemon_list', 'title': 'Pokemones', 'subtitle': 'Lista paginada'},
-    {'route': 'alert_pokemon_screen', 'title': 'Poke - alerta', 'subtitle': 'Es de prueba'},
-    {'route': 'pokemon-moves', 'title': 'Habilidades', 'subtitle': 'Movimientos'},
+    {'route': 'pokemon-moves', 'title': 'Poke-moves', 'subtitle': 'Movimientos'},
     {'route': 'profile_screen', 'title': 'Perfil', 'subtitle': 'Editar tus datos'},
-    {'route': 'habilidades_screen', 'title': 'Habilidades', 'subtitle': 'Editar tus datos'},
+    {'route': 'habilidades_screen', 'title': 'Habilidades', 'subtitle': '...'},
   ];
 
   Menu({super.key});
@@ -30,10 +30,9 @@ class Menu extends StatelessWidget {
                         minLeadingWidth: 25,
                         iconColor: Colors.blueGrey,
                         title: Text(item['title']!,
-                            style: const TextStyle(fontFamily: 'FuzzyBubbles')),
+                            style: GoogleFonts.pressStart2p()),
                         subtitle: Text(item['subtitle'] ?? '',
-                            style: const TextStyle(
-                                fontFamily: 'RobotoMono', fontSize: 11)),
+                            style: GoogleFonts.pressStart2p(fontSize: 11)),
                         // leading: const Image(image: AssetImage('assets/icon_pokeball.png')), /* Por algun motivo me larga error, creo que es el tamaño del png */
                         leading: const Icon(Icons.arrow_right), //icono al inicio
                         // trailing: const Icon(Icons.arrow_right), // icono al final
