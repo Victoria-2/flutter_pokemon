@@ -11,35 +11,37 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final themeProvider = ThemeProvider();
-  await themeProvider.loadTheme(); // Cargar el tema guardado
+  await themeProvider.loadTheme(); 
 
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => themeProvider,
-      child: const MyApp(),
-    ),
-  );
+  runApp(MyApp(themeProvider: themeProvider));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final ThemeProvider themeProvider;
+
+  const MyApp({Key? key, required this.themeProvider}) : super(key: key);
 
 
-@override
-Widget build(BuildContext context) {
-  final tema = Provider.of<ThemeProvider>(context);
-
-  return MaterialApp(
-    debugShowCheckedModeBanner: false,
-    initialRoute: 'home',
-    theme: tema.temaActual, // Aplica el tema dinámico
-    routes: {
-      'home': (context) => const HomeScreen(),
-      'profile_screen': (context) => const ProfileScreen(),
-      'pokemon_list': (context) => const PokemonList(),
-      'alert_pokemon_screen': (context) => const PokemonAlertScreen(),
-      'habilidades_screen': (context) => const PokemonListScreen(),
-    },
-  );
-}
-}
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<ThemeProvider>(
+      create: (_) => themeProvider,
+      child: Consumer<ThemeProvider>(
+        builder: (context, tema, child){
+          return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialRoute: 'home',
+          theme: tema.temaActual, 
+          routes: {
+          'home': (context) => const HomeScreen(),
+          'profile_screen': (context) => const ProfileScreen(),
+          'pokemon_list': (context) => const PokemonList(),
+          'alert_pokemon_screen': (context) => const PokemonAlertScreen(),
+          'habilidades_screen': (context) => const PokemonListScreen(),
+          },
+            );
+          },
+        ),
+      );
+    }
+  }

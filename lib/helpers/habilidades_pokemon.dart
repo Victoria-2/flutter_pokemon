@@ -87,7 +87,7 @@ Future<List<Map<String, dynamic>>> getAllPokemon() async {
       final data = jsonDecode(response.body);
       final List results = data['results'];
 
-      // Obtenemos los detalles de cada Pokémon
+      
       final detailedPokemon = await Future.wait(results.map((pokemon) async {
         final detailResponse = await http.get(Uri.parse(pokemon['url']));
         if (detailResponse.statusCode == 200) {
@@ -102,13 +102,13 @@ Future<List<Map<String, dynamic>>> getAllPokemon() async {
                 .toList(),
           };
         }
-        return null; // Si no se puede obtener el detalle, devolvemos null
+        return null; 
       }));
 
-      // Filtrar y convertir a una lista del tipo correcto
+      
       return detailedPokemon
-          .where((pokemon) => pokemon != null) // Filtrar valores nulos
-          .cast<Map<String, dynamic>>() // Cast explícito para garantizar el tipo
+          .where((pokemon) => pokemon != null) 
+          .cast<Map<String, dynamic>>() 
           .toList();
     } else {
       throw Exception('Error al obtener Pokémon');

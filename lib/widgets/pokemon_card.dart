@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_pokemon/screens/screens.dart'; // Importa la pantalla de detalles
+import 'package:flutter_pokemon/screens/screens.dart'; 
 
 class PokemonCard extends StatelessWidget {
   final String name;
@@ -24,12 +24,11 @@ class PokemonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Ruta del SVG basado en el tipo
+    
     String typeSvgPath = 'assets/${type.toLowerCase()}.svg';
 
     return GestureDetector(
       onTap: () {
-        // Navegar a la pantalla de detalles
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -103,20 +102,20 @@ class PokemonCard extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          // Icono SVG con fondo circular
+                          
                           Container(
                             width: 24,
                             height: 24,
                             decoration: BoxDecoration(
-                              color: color.withOpacity(0.9), // Fondo más oscuro
+                              color: color.withOpacity(0.9), 
                               shape: BoxShape.circle,
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.all(4), // Margen interno
+                              padding: const EdgeInsets.all(4),
                               child: SvgPicture.asset(
                                 typeSvgPath,
                                 fit: BoxFit.contain,
-                                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn), // Color del icono
+                                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn), 
                               ),
                             ),
                           ),

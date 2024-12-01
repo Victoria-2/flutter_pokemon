@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../helpers/habilidades_pokemon.dart';
 import '../widgets/pokemon_card.dart';
-import '../widgets/menu.dart'; // Importa el archivo de menú
+import '../widgets/menu.dart';
 
 class PokemonListScreen extends StatefulWidget {
   const PokemonListScreen({super.key});
@@ -43,7 +43,7 @@ class PokemonListScreenState extends State<PokemonListScreen> {
   }
 
   Future<void> _fetchPokemons() async {
-    final pokemons = await _apiService.getAllPokemon(); // Ya devuelve List<Pokemon>
+    final pokemons = await _apiService.getAllPokemon(); 
     setState(() {
       _pokemons = pokemons;
       _isLoading = false;
@@ -56,16 +56,16 @@ class PokemonListScreenState extends State<PokemonListScreen> {
       appBar: AppBar(
         title: const Text('Lista de Pokémon'),
       ),
-      // Aquí agregamos el Drawer usando tu clase Menu
-      drawer: Menu(), // Aquí es donde agregamos tu menú
+      
+      drawer: Menu(),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: _pokemons.length,
               itemBuilder: (context, index) {
                 final pokemon = _pokemons[index];
-                final type = pokemon['type']; // Extraemos el tipo
-                final color = typeColors[type] ?? Colors.grey; // Asignamos color
+                final type = pokemon['type'];
+                final color = typeColors[type] ?? Colors.grey; 
 
                 return PokemonCard(
                   name: pokemon['name'],

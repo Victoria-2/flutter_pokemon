@@ -57,26 +57,26 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
   @override
   void initState() {
     super.initState();
-    isFavorite = false; // Valor inicial
+    isFavorite = false; 
     apodoController = TextEditingController();
-    _loadPreferences(); // Cargar el favorito y el apodo desde SharedPreferences
+    _loadPreferences(); 
   }
 
   @override
   void dispose() {
-    _saveFavorite(isFavorite);  // Guarda el estado de favorito
-    _saveApodo(apodoController.text);  // Guarda el apodo
-    apodoController.dispose();  // Libera el controlador de texto
-    super.dispose();  // Llama al dispose de la clase base
+    _saveFavorite(isFavorite);  
+    _saveApodo(apodoController.text); 
+    apodoController.dispose();  
+    super.dispose();  
   }
 
-  // Método para cargar los datos guardados
+  
   Future<void> _loadPreferences() async {
     debugPrint('Obteniendo preferencias...');
     final prefs = await SharedPreferences.getInstance();
     debugPrint('Preferencias obtenidas');
 
-    // Depuración: Verificar si las claves existen y mostrar los valores
+    // Debugg porque no me estaba funcionando
     final bool? isFavoriteStored = prefs.containsKey('${widget.name}_favorite') 
         ? prefs.getBool('${widget.name}_favorite') 
         : null;
@@ -90,7 +90,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
       debugPrint('No se encontraron preferencias para ${widget.name}');
     }
 
-    // Verificar si el widget aún está montado antes de llamar a setState
+    
     if (mounted) {
       setState(() {
       isFavorite = prefs.getBool('${widget.name}_favorite') ?? false;
@@ -101,7 +101,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
     }
   }
 
-  // Método para guardar el estado de favorito
+  
   Future<void> _saveFavorite(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     debugPrint('Guardando para ${widget.name}');
@@ -123,7 +123,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
 
     if (mounted) {
       setState(() {
-        savedApodo = apodo;  // Esto debería reflejar el cambio en la UI
+        savedApodo = apodo;  
       });
     }
   }
@@ -153,7 +153,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
               children: [
                 Container(
                   constraints: const BoxConstraints(
-                    maxWidth: 750, // Ajustar el tamaño del contenedor
+                    maxWidth: 750, 
                   ),
                   padding: const EdgeInsets.all(16),
                   margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -195,7 +195,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                     hintText: 'Escribe un apodo...',
                                   ),
                                     onChanged: (value) {
-                                        _saveApodo(value);  // Guardar inmediatamente el cambio en el apodo
+                                        _saveApodo(value);  
                                       },
                                 ),
                               ),
@@ -224,9 +224,9 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                               ),
                               const SizedBox(height: 8),
                               FavoriteCheckbox(
-                                value: isFavorite, // Pasamos el estado directamente
+                                value: isFavorite, 
                                 onChanged: (value) {
-                                  _saveFavorite(value); // Guardamos el estado en SharedPreferences
+                                  _saveFavorite(value); 
                                 },
                               ),
                             ],
@@ -277,14 +277,14 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                   ),
                 ),
                 Positioned(
-                  top: -100, // Posición del sprite
+                  top: -100, 
                   left: 0,
                   right: 0,
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Image.network(
                       widget.image,
-                      height: 200, // Altura del sprite
+                      height: 200,
                       fit: BoxFit.contain,
                       errorBuilder: (context, error, stackTrace) =>
                           const Icon(Icons.error, size: 120),
@@ -292,7 +292,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                   ),
                 ),
                 Positioned(
-                  top: 110, // Ajusta este valor para colocarlo justo debajo del sprite
+                  top: 110, 
                   left: 0,
                   right: 0,
                   child: Column(
