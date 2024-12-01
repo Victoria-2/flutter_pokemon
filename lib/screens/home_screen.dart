@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon/helpers/pokemon_preferences.dart';
+import 'package:flutter_pokemon/screens/habilidades_screen.dart';
 import 'package:flutter_pokemon/screens/pokemon_list.dart';
 import 'package:flutter_pokemon/widgets/create_pokemon_card.dart';
 import 'package:flutter_pokemon/widgets/menu.dart';
@@ -40,6 +41,10 @@ class HomeScreen extends StatelessWidget {
             child: HorizontalSwipper(size: size, lista:elements, titulo: 'Lista de Pokemones', vinculo: const PokemonList())
             ),
             const Divider(thickness: 3),
+            const Padding(
+              padding: EdgeInsets.all(10),
+              child: SwipperHeader(titulo: 'Habilidades', vinculo: PokemonListScreen())),
+              const Divider(thickness: 3),
           Padding(
             padding: const EdgeInsets.all(10),
             child: HorizontalSwipper(size: size, lista:PokemonPreferences.getAllFavouritePokemon(), titulo: 'Favoritos', vinculo: null)
@@ -66,7 +71,7 @@ class CarusselImagenes extends StatelessWidget {
     return CarouselSlider(
           items: [
             // aca van las rutas de las imagenes, fijarme is puedo ponerle el loading
-            Image.asset('assets/img/logo.png'),
+            Image.asset('assets/logo.png'),
             Image.asset('assets/icon_pokeball.png'),
           ],
           options: CarouselOptions(
