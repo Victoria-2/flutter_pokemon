@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final pokemon = pokemonFromJson(jsonString);
-
 import 'dart:convert';
 
 Pokemon pokemonFromJson(String str) => Pokemon.fromJson(json.decode(str));
