@@ -17,7 +17,7 @@ class PokemonProvider extends ChangeNotifier {
   getPokemon([int limit = 10]) async { // xq el limite es 10 ?
     try {
       final url = Uri.https('tp-api-pokemon.onrender.com',
-          '/api/v1/pokemons/', {'page': '$currentPage', 'limit': '$limit'});
+          '/api/v1/pokemons/', {'offset': '$currentPage', 'limit': '$limit'});
 
       isLoading = true;
       final response = await http.get(url);
@@ -58,7 +58,7 @@ class PokemonProvider extends ChangeNotifier {
         print('Error en el servicio: ${response.statusCode}');
         return null;
       }
-      
+
     } catch (e) {
       print('Error al realizar el request: $e');
       return null;
