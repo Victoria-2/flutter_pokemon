@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final pokemon_provider = Provider.of<PokemonProvider>(context);
     final size = MediaQuery.of(context).size;
     log(' ${size.width} ${size.height}');
 
@@ -38,7 +39,12 @@ class HomeScreen extends StatelessWidget {
           const Divider(thickness: 3),
           Padding(
             padding: const EdgeInsets.all(10),
-            child: HorizontalSwipper(size: size, lista:elements, titulo: 'Lista de Pokemones', vinculo: const PokemonList())
+            child: HorizontalSwipper(
+              size: size, 
+              lista:elements, 
+              titulo: 'Lista de Pokemones', 
+              vinculo: const PokemonList()
+              )
             ),
             const Divider(thickness: 3),
             const Padding(
@@ -120,7 +126,7 @@ class HorizontalSwipper extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: lista.length,
               itemBuilder: (context, index) {
-                var pokemon = lista[index];
+                var pokemon = lista[index]; // creo que esto habria que borrarlo
                 int id = pokemon[0];
                 String name = pokemon[1];
                 int xp = pokemon[2];  
