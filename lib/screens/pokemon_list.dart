@@ -13,7 +13,7 @@ class PokemonList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    //final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final pokemonProvider = Provider.of<PokemonProvider>(context);
     
     return Scaffold(
@@ -32,39 +32,27 @@ class PokemonList extends StatelessWidget {
       drawer: Menu(),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: listarPokemones(pokemonProvider, args)
+        child: listarPokemones(pokemonProvider)
         )
     );
   }
 
-  /*GridView listarPokemones() {
-  return GridView.count(
-    crossAxisCount: 2, // num columnas
-    children: List.generate(elements.length, (index) { // en el children tengo que poner un future builder en vez de un list.generate
-      var pokemon = elements[index];
-      int id = pokemon[0];
-      String name = pokemon[1];
-      int xp = pokemon[2];
-      String sprite = pokemon[3];
 
-      return PokemonCard(id: id, name: name, sprite: sprite, xp: xp,);
-    }),
-  );*/
-  FutureBuilder<List<Pokemon>> listarPokemones(PokemonProvider pokemonProvider, Map<String, dynamic> args) {
-  return FutureBuilder<List<Pokemon>>(
-    future: pokemonProvider.getPokemon(int.parse(args['id'])), 
-    builder: (context, AsyncSnapshot<List<Pokemon>> snapshot) {
-      // Verificamos el estado de la conexión y mostramos lo apropiado
+  FutureBuilder<dynamic> listarPokemones(PokemonProvider pokemonProvider) {
+  return FutureBuilder<dynamic>(
+    future: pokemonProvider.getPokemon(), // 
+    builder: (context, AsyncSnapshot<dynamic> snapshot) {
+      // ...
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
+        return Center(child: Image.asset('assets/loading_pokeball.gif'));
       } else if (snapshot.hasError) {
         return Center(child: Text('Error: ${snapshot.error}'));
 
-      } else if (snapshot.hasData) {
+      } /* else */ if (snapshot.hasData) {
         var pokemones = snapshot.data!;
         return GridView.count(
           crossAxisCount: 2,  // Número de columnas
-          children: List.generate(pokemones.length, (index) {
+          children: List.generate(pokemones.length, (index) { // agarrar la cantidad desde pokemon provider
             var pokemon = pokemones[index];
             int id = pokemon.data.id;
             String name = pokemon.data.name;

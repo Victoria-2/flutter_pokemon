@@ -14,7 +14,7 @@ class PokemonProvider extends ChangeNotifier {
     this.getPokemon();
   }
 
-  getPokemon([int limit = 10]) async { // xq el limite es 10 ?
+  getPokemon([int limit = 10]) async { // xq el limite es 10 ? -- tengo que pagar page tambien (?
     try {
       final url = Uri.https('tp-api-pokemon.onrender.com',
           '/api/v1/pokemons/', {'offset': '$currentPage', 'limit': '$limit'});
@@ -23,8 +23,8 @@ class PokemonProvider extends ChangeNotifier {
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-      final pokemonsList = List<Pokemon>.from(
-        json.decode(response.body)['pokemons'].map((x) => Pokemon.fromJson(x))
+      final pokemonsList = List<Pokemon>.from( // NO TIENE QUE SER UNA LISTA !! -- o si, ya no tengo idea la verdad
+        json.decode(response.body)['msg'].map((x) => Pokemon.fromJson(x))
       );
       listPokemon = [...listPokemon, ...pokemonsList]; // Expandir la lista de Pokémon
       print('Petición realizada a Poke-API $currentPage');
