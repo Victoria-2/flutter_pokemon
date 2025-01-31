@@ -6,14 +6,34 @@ import 'package:flutter_pokemon/widgets/menu.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class PokemonList extends StatelessWidget {
+class PokemonList extends StatefulWidget {
   final Pokemon? pokemon;
   
   const PokemonList({super.key, this.pokemon});
 
   @override
+  State<PokemonList> createState() => _PokemonListState();
+}
+
+class _PokemonListState extends State<PokemonList> {
+  final ScrollController scrollController = ScrollController();
+  late Future<void> _futurePokemon;
+
+  @override
+  void initState() {
+    super.initState();
+    final pokemonProvider = Provider.of<PokemonProvider>(context, listen: false);
+    _futurePokemon = pokemonProvider.getPokemon();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent && !pokemonProvider.isLoading) {
+        print('Final pokemones. Cargando ...');
+        _futurePokemon = pokemonProvider.getPokemon();
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    //final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final pokemonProvider = Provider.of<PokemonProvider>(context);
     
     return Scaffold(
@@ -32,40 +52,33 @@ class PokemonList extends StatelessWidget {
       drawer: Menu(),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: listarPokemones(pokemonProvider)
-        )
+        child: FutureBuilder<void>(
+          future: _futurePokemon,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting && pokemonProvider.listPokemon.isEmpty) {
+              return Center(child: Image.asset('assets/loading_pokeball.gif'));
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (pokemonProvider.listPokemon.isEmpty) {
+              return const Center(child: Text('No Pokémon found.'));
+            } else {
+              return GridView.count(
+                controller: scrollController,
+                crossAxisCount: 2,
+                children: List.generate(pokemonProvider.listPokemon.length, (index) {
+                  var pokemon = pokemonProvider.listPokemon[index];
+                  return PokemonCard(
+                    id: pokemon.data.id,
+                    name: pokemon.data.name,
+                    sprite: pokemon.data.sprite,
+                    xp: pokemon.data.xp,
+                  );
+                }),
+              );
+            }
+          },
+        ),
+      ),
     );
   }
-
-
-  FutureBuilder<dynamic> listarPokemones(PokemonProvider pokemonProvider) {
-  return FutureBuilder<dynamic>(
-    future: pokemonProvider.getPokemon(), // 
-    builder: (context, AsyncSnapshot<dynamic> snapshot) {
-      // ...
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(child: Image.asset('assets/loading_pokeball.gif'));
-      } else if (snapshot.hasError) {
-        return Center(child: Text('Error: ${snapshot.error}'));
-
-      } /* else */ if (snapshot.hasData) {
-        var pokemones = snapshot.data!;
-        return GridView.count(
-          crossAxisCount: 2,  // Número de columnas
-          children: List.generate(pokemones.length, (index) { // agarrar la cantidad desde pokemon provider
-            var pokemon = pokemones[index];
-            int id = pokemon.data.id;
-            String name = pokemon.data.name;
-            String sprite = pokemon.data.sprite;
-            int xp = pokemon.data.xp;
-
-            return PokemonCard(id: id, name: name, sprite: sprite, xp: xp);
-          }),
-        );
-      } else {
-        return const Center(child: Text('No Pokémon found.'));
-      }
-    },
-  );
-}
 }
