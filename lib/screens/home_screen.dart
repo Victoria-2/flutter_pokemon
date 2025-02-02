@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon/helpers/pokemon_preferences.dart';
+import 'package:flutter_pokemon/providers/pokemon_provider.dart';
 import 'package:flutter_pokemon/screens/habilidades_screen.dart';
 import 'package:flutter_pokemon/screens/pokemon_list.dart';
 import 'package:flutter_pokemon/widgets/create_pokemon_card.dart';
@@ -8,13 +9,14 @@ import 'dart:developer';
 import 'package:flutter_pokemon/mocks/pokemon_mock.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // final pokemon_provider = Provider.of<PokemonProvider>(context);
+    final pokemon_provider = Provider.of<PokemonProvider>(context);
     final size = MediaQuery.of(context).size;
     log(' ${size.width} ${size.height}');
 
@@ -53,7 +55,7 @@ class HomeScreen extends StatelessWidget {
               const Divider(thickness: 3),
           Padding(
             padding: const EdgeInsets.all(10),
-            child: HorizontalSwipper(size: size, lista:PokemonPreferences.getAllFavouritePokemon(), titulo: 'Favoritos', vinculo: null)
+            child: HorizontalSwipper(size: size, lista:PokemonPreferences.getAllFavouritePokemon(pokemon_provider), titulo: 'Favoritos', vinculo: null)
             ),
             SizedBox(height: 20)
         ],

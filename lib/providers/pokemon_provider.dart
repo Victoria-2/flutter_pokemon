@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_pokemon/models/poke_response_model.dart';
 import 'package:flutter_pokemon/models/pokemon_model.dart';
 import 'package:http/http.dart' as http;
@@ -8,13 +7,14 @@ import 'package:http/http.dart' as http;
 class PokemonProvider extends ChangeNotifier {
   List<Pokemon> listPokemon = [];
   bool isLoading = false;
+  int offset = 0;
 
   PokemonProvider() {
     print('Llamando a PokemonProvider');
     this.getPokemon();
   }
 
-  Future<void> getPokemon([int limit = 10]) async {
+  Future<void> getPokemon() async {
     if (isLoading) return;
 
     isLoading = true;
@@ -22,9 +22,10 @@ class PokemonProvider extends ChangeNotifier {
 
     try {
       final url = Uri.https('tp-api-pokemon.onrender.com',
-          '/api/v1/pokemons/', {'offset': '1', 'limit': '$limit'});
+          '/api/v1/pokemons/', {'offset': '$offset', 'limit': '10'});
 
       final response = await http.get(url);
+      print("Respuesta de la API: ${response.body}");
 
       if (response.statusCode == 200) {
         final pokeResponse = pokeResponseFromJson(response.body);
@@ -37,11 +38,12 @@ class PokemonProvider extends ChangeNotifier {
             listPokemon.add(pokemon);
           }
         }
+        offset += 10;
       } else {
         print('Error en el servicio: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error al realizar el request: $e');
+      print('Error al realizar el request 1: $e');
     } finally {
       isLoading = false;
       notifyListeners();
@@ -65,7 +67,7 @@ class PokemonProvider extends ChangeNotifier {
       }
 
     } catch (e) {
-      print('Error al realizar el request: $e');
+      print('Error al realizar el request 2: $e');
       return null;
     }
   }

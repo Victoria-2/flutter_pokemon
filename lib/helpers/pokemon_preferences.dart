@@ -1,4 +1,4 @@
-import 'package:flutter_pokemon/mocks/pokemon_mock.dart';
+import 'package:flutter_pokemon/providers/pokemon_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PokemonPreferences {
@@ -26,7 +26,7 @@ class PokemonPreferences {
     _prefs.setString('apodo_$id', value);
   }
   
-static List<List<dynamic>> getAllFavouritePokemon() {
+static List<List<dynamic>> getAllFavouritePokemon(PokemonProvider pokemonProvider) {
   final keys = _prefs.getKeys();  // Obtener todas las claves
   List<List<dynamic>> favouritePokemonDetails = [];
 
@@ -36,11 +36,17 @@ static List<List<dynamic>> getAllFavouritePokemon() {
       final id = int.tryParse(key.split('_')[1] ?? '');  // Extrae el ID
       if (id != null && isFavourite(id)) {
         // Buscar el Pokémon con el ID correspondiente en la lista 'elements'
-        var pokemon = elements.firstWhere((element) => element[0] == id, orElse: () => []);
-        if (pokemon.isNotEmpty) {
-          favouritePokemonDetails.add(pokemon);  // Agregar el Pokémon favorito a la lista
+         var pokemon = pokemonProvider.listPokemon.firstWhere(
+            (pokemon) => pokemon.data.id == id,
+          );
+
+          favouritePokemonDetails.add([
+            pokemon.data.id, 
+            pokemon.data.name, 
+            pokemon.data.xp, 
+            pokemon.data.sprite
+          ]);  // Agregar detalles del Pokémon favorito
         }
-      }
     }
   }
 

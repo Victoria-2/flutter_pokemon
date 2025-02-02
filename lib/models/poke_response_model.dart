@@ -27,7 +27,7 @@ class PokeResponse {
 class Data {
     int count;
     String next;
-    String previous;
+    String? previous;
     List<Result> results;
 
     Data({

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_pokemon/models/pokemon_model.dart';
 import 'package:flutter_pokemon/providers/pokemon_provider.dart';
 import 'package:flutter_pokemon/widgets/create_pokemon_card.dart';
@@ -17,17 +18,25 @@ class PokemonList extends StatefulWidget {
 
 class _PokemonListState extends State<PokemonList> {
   final ScrollController scrollController = ScrollController();
-  late Future<void> _futurePokemon;
+  Future<void> _futurePokemon = Future.value();
 
   @override
   void initState() {
     super.initState();
-    final pokemonProvider = Provider.of<PokemonProvider>(context, listen: false);
-    _futurePokemon = pokemonProvider.getPokemon();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      final pokemonProvider = Provider.of<PokemonProvider>(context, listen: false);
+      setState(() {
+        _futurePokemon = pokemonProvider.getPokemon();
+      });
+    });
+    
     scrollController.addListener(() {
+      final pokemonProvider = Provider.of<PokemonProvider>(context, listen: false);
       if (scrollController.position.pixels >= scrollController.position.maxScrollExtent && !pokemonProvider.isLoading) {
         print('Final pokemones. Cargando ...');
-        _futurePokemon = pokemonProvider.getPokemon();
+        setState(() {
+         _futurePokemon = pokemonProvider.getPokemon();
+        });
       }
     });
   }
@@ -60,9 +69,10 @@ class _PokemonListState extends State<PokemonList> {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (pokemonProvider.listPokemon.isEmpty) {
-              return const Center(child: Text('No Pokémon found.'));
+              return const Center(child: Text('No se encontraron Pokémon.'));
             } else {
               return GridView.count(
+                physics: const BouncingScrollPhysics(),
                 controller: scrollController,
                 crossAxisCount: 2,
                 children: List.generate(pokemonProvider.listPokemon.length, (index) {
