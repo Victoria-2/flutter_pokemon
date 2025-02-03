@@ -11,12 +11,17 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
   Widget build(BuildContext context) {
-    final pokemon_provider = Provider.of<PokemonProvider>(context);
+    final pokemonProvider = Provider.of<PokemonProvider>(context);
     final size = MediaQuery.of(context).size;
     log(' ${size.width} ${size.height}');
 
@@ -43,7 +48,7 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: HorizontalSwipper(
               size: size, 
-              lista:elements, 
+              lista: pokemonProvider.listPokemon, // HACER QUE SETRAIGAN LOS PRIMEROS 10, TIENE QUE CARGAR. Meterle un limite de hasta 20 y q despues salga un 'ver mas'
               titulo: 'Lista de Pokemones', 
               vinculo: const PokemonList()
               )
@@ -53,9 +58,9 @@ class HomeScreen extends StatelessWidget {
               padding: EdgeInsets.all(10),
               child: SwipperHeader(titulo: 'Habilidades', vinculo: PokemonListScreen())),
               const Divider(thickness: 3),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: HorizontalSwipper(size: size, lista:PokemonPreferences.getAllFavouritePokemon(pokemon_provider), titulo: 'Favoritos', vinculo: null)
+          Padding( // Agarra lo que trae el provider. NO OLVIDARSE EL AWAIT !
+            padding: const EdgeInsets.all(10), 
+            child: HorizontalSwipper(size: size, lista:PokemonPreferences.getAllFavouritePokemon(pokemonProvider), titulo: 'Favoritos', vinculo: null)
             ),
             SizedBox(height: 20)
         ],

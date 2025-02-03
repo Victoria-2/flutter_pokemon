@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_pokemon/models/poke_response_model.dart';
@@ -11,6 +13,7 @@ class PokemonProvider extends ChangeNotifier {
 
   PokemonProvider() {
     print('Llamando a PokemonProvider');
+    // ignore: unnecessary_this
     this.getPokemon();
   }
 
@@ -84,7 +87,7 @@ class PokemonProvider extends ChangeNotifier {
         print('El id es: $id');
         return id;
       } else {
-        throw FormatException('La URL no tiene segmentos válidos');
+        throw const FormatException('La URL no tiene segmentos válidos');
       }
     } catch (e) {
       print('Error al extraer el ID: $e');

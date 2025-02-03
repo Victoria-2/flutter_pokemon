@@ -38,15 +38,18 @@ static List<List<dynamic>> getAllFavouritePokemon(PokemonProvider pokemonProvide
         // Buscar el Pokémon con el ID correspondiente en la lista 'elements'
          var pokemon = pokemonProvider.listPokemon.firstWhere(
             (pokemon) => pokemon.data.id == id,
+            // orElse: () => null // Retorna null si no se encuentra el Pokémon
           );
 
-          favouritePokemonDetails.add([
-            pokemon.data.id, 
-            pokemon.data.name, 
-            pokemon.data.xp, 
-            pokemon.data.sprite
-          ]);  // Agregar detalles del Pokémon favorito
+          if (pokemon != null) {
+            favouritePokemonDetails.add([
+              pokemon.data.id, 
+              pokemon.data.name, 
+              pokemon.data.xp, 
+              pokemon.data.sprite
+            ]);  // Agregar detalles del Pokémon favorito // Agregar detalles del Pokémon favorito
         }
+      }
     }
   }
 
