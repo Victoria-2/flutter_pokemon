@@ -1,29 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_pokemon/helpers/pokemon_preferences.dart';
+import 'package:flutter_pokemon/models/pokemon_model.dart';
 import 'package:flutter_pokemon/providers/pokemon_provider.dart';
 import 'package:flutter_pokemon/screens/habilidades_screen.dart';
 import 'package:flutter_pokemon/screens/pokemon_list.dart';
 import 'package:flutter_pokemon/widgets/create_pokemon_card.dart';
 import 'package:flutter_pokemon/widgets/menu.dart';
-import 'dart:developer';
-import 'package:flutter_pokemon/mocks/pokemon_mock.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final Pokemon? pokemon;
+  
+  const HomeScreen({super.key, this.pokemon});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+
 class _HomeScreenState extends State<HomeScreen> {
+  final ScrollController scrollController = ScrollController();
+  Future<void> _futurePokemon = Future.value();
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      final pokemonProvider = Provider.of<PokemonProvider>(context, listen: false);
+      setState(() {
+        _futurePokemon = pokemonProvider.getPokemon();
+      });
+    });
+    
+    scrollController.addListener(() {
+      final pokemonProvider = Provider.of<PokemonProvider>(context, listen: false);
+      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent && !pokemonProvider.isLoading) {
+        print('Final pokemones. Cargando ...');
+        setState(() {
+         _futurePokemon = pokemonProvider.getPokemon();
+        });
+      }
+    });
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     final pokemonProvider = Provider.of<PokemonProvider>(context);
     final size = MediaQuery.of(context).size;
-    log(' ${size.width} ${size.height}');
+    // log(' ${size.width} ${size.height}');
 
     return Scaffold(
       appBar: AppBar(
@@ -46,23 +74,46 @@ class _HomeScreenState extends State<HomeScreen> {
           const Divider(thickness: 3),
           Padding(
             padding: const EdgeInsets.all(10),
-            child: HorizontalSwipper(
-              size: size, 
-              lista: pokemonProvider.listPokemon, // HACER QUE SETRAIGAN LOS PRIMEROS 10, TIENE QUE CARGAR. Meterle un limite de hasta 20 y q despues salga un 'ver mas'
-              titulo: 'Lista de Pokemones', 
-              vinculo: const PokemonList()
-              )
+            child: 
+              FutureBuilder<void>(
+          future: _futurePokemon,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting && pokemonProvider.listPokemon.isEmpty) {
+              return Center(child: Image.asset('assets/loading_pokeball.gif'));
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (pokemonProvider.listPokemon.isEmpty) {
+              return const Center(child: Text('No se encontraron Pokémon.'));
+            } else {
+              return HorizontalSwipper( size: size, lista: pokemonProvider.listPokemon, titulo: 'Lista de Pokemones', vinculo: const PokemonList());
+            }
+          },
+        ),
             ),
             const Divider(thickness: 3),
             const Padding(
               padding: EdgeInsets.all(10),
               child: SwipperHeader(titulo: 'Habilidades', vinculo: PokemonListScreen())),
               const Divider(thickness: 3),
-          Padding( // Agarra lo que trae el provider. NO OLVIDARSE EL AWAIT !
+          Padding( 
             padding: const EdgeInsets.all(10), 
-            child: HorizontalSwipper(size: size, lista:PokemonPreferences.getAllFavouritePokemon(pokemonProvider), titulo: 'Favoritos', vinculo: null)
+            child:
+            FutureBuilder<void>(
+          future: _futurePokemon,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting && pokemonProvider.listPokemon.isEmpty) {
+              return Center(child: Image.asset('assets/loading_pokeball.gif'));
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (pokemonProvider.listPokemon.isEmpty) {
+              return const Center(child: Text('No se encontraron Pokémon.'));
+            } else {
+              return HorizontalSwipper(size: size, lista:PokemonPreferences.getAllFavouritePokemon(pokemonProvider), titulo: 'Favoritos', vinculo: null);
+            }
+          },
+        ),
             ),
-            SizedBox(height: 20)
+            const SizedBox(height: 20)
         ],
         ),
       )
@@ -111,7 +162,7 @@ class HorizontalSwipper extends StatelessWidget {
   });
 
   final Size size;
-  final List lista;
+  final List<dynamic> lista;
   final String titulo;
   final Widget? vinculo;
 
@@ -133,13 +184,26 @@ class HorizontalSwipper extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: lista.length,
               itemBuilder: (context, index) {
-                var pokemon = lista[index]; // creo que esto habria que borrarlo
-                int id = pokemon[0];
-                String name = pokemon[1];
-                int xp = pokemon[2];  
-                String sprite = pokemon[3];
+                var pokemon = lista[index];
+
+                if (lista is List<Pokemon>) {
+                  return PokemonCard(
+                    id: pokemon.data.id,
+                    name: pokemon.data.name,
+                    sprite: pokemon.data.sprite,
+                    xp: pokemon.data.xp,
+                  );
+                }
+
+                if (lista is List<List<dynamic>>) {
+                  return PokemonCard(
+                    id: pokemon[0],
+                    name: pokemon[1],
+                    sprite: pokemon[3],
+                    xp: pokemon[2],
+                  );
+                }
                 
-                return PokemonCard(id: id, name: name, sprite: sprite, xp: xp);
               },
             )
             )

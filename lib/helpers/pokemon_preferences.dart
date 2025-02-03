@@ -1,3 +1,4 @@
+import 'package:flutter_pokemon/models/pokemon_model.dart';
 import 'package:flutter_pokemon/providers/pokemon_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,27 +34,27 @@ static List<List<dynamic>> getAllFavouritePokemon(PokemonProvider pokemonProvide
   for (String key in keys) {
     // Verificamos si la clave corresponde a un Pokémon favorito
     if (key.startsWith('favorito_')) {
-      final id = int.tryParse(key.split('_')[1] ?? '');  // Extrae el ID
+      final id = int.tryParse(key.split('_')[1]);  // Extrae el ID
       if (id != null && isFavourite(id)) {
         // Buscar el Pokémon con el ID correspondiente en la lista 'elements'
          var pokemon = pokemonProvider.listPokemon.firstWhere(
             (pokemon) => pokemon.data.id == id,
-            // orElse: () => null // Retorna null si no se encuentra el Pokémon
+            orElse: () => Pokemon(msg: '', data: Data(id: -1, name: '', xp: 0, sprite: '')) // Si no encuentra un pokemon, devuelve uno con un id negativo
           );
 
-          if (pokemon != null) {
+          if (pokemon.data.id != -1) {
             favouritePokemonDetails.add([
               pokemon.data.id, 
               pokemon.data.name, 
               pokemon.data.xp, 
               pokemon.data.sprite
-            ]);  // Agregar detalles del Pokémon favorito // Agregar detalles del Pokémon favorito
+            ]); 
         }
       }
     }
   }
 
-  favouritePokemonDetails.sort((a, b) => a[0].compareTo(b[0])); // Ordenar en orden
+  favouritePokemonDetails.sort((a, b) => a[0].compareTo(b[0])); // Los pone en orden
 
   return favouritePokemonDetails;  // Devolver lista
 }

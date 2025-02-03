@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 class PokemonProvider extends ChangeNotifier {
   List<Pokemon> listPokemon = [];
   bool isLoading = false;
+  bool isLoaded = false;
   int offset = 0;
 
   PokemonProvider() {
@@ -33,15 +34,18 @@ class PokemonProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         final pokeResponse = pokeResponseFromJson(response.body);
 
-        for (var result in pokeResponse.data.results) {
+        // Cargar datos en paralelo
+        await Future.wait(pokeResponse.data.results.map((result) async { // Línea 36
           final pokemonId = _extraerIdUrl(result.url);
           final pokemon = await getPokemonById(pokemonId);
 
           if (pokemon != null) {
             listPokemon.add(pokemon);
           }
-        }
+        }));
+        
         offset += 10;
+        isLoaded = true;
       } else {
         print('Error en el servicio: ${response.statusCode}');
       }
