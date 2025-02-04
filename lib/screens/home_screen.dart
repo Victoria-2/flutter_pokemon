@@ -22,7 +22,6 @@ class HomeScreen extends StatefulWidget {
 
 
 class _HomeScreenState extends State<HomeScreen> {
-  final ScrollController scrollController = ScrollController();
   Future<void> _futurePokemon = Future.value();
 
   @override
@@ -34,16 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _futurePokemon = pokemonProvider.getPokemon();
       });
     });
-    
-    scrollController.addListener(() {
-      final pokemonProvider = Provider.of<PokemonProvider>(context, listen: false);
-      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent && !pokemonProvider.isLoading) {
-        print('Final pokemones. Cargando ...');
-        setState(() {
-         _futurePokemon = pokemonProvider.getPokemon();
-        });
-      }
-    });
+
   }
   
 
@@ -51,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final pokemonProvider = Provider.of<PokemonProvider>(context);
     final size = MediaQuery.of(context).size;
-    // log(' ${size.width} ${size.height}');
 
     return Scaffold(
       appBar: AppBar(
@@ -78,12 +67,10 @@ class _HomeScreenState extends State<HomeScreen> {
               FutureBuilder<void>(
           future: _futurePokemon,
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting && pokemonProvider.listPokemon.isEmpty) {
+            if (snapshot.connectionState == ConnectionState.waiting || pokemonProvider.listPokemon.isEmpty) {
               return Center(child: Image.asset('assets/loading_pokeball.gif'));
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (pokemonProvider.listPokemon.isEmpty) {
-              return const Center(child: Text('No se encontraron Pokémon.'));
             } else {
               return HorizontalSwipper( size: size, lista: pokemonProvider.listPokemon, titulo: 'Lista de Pokemones', vinculo: const PokemonList());
             }
@@ -101,12 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
             FutureBuilder<void>(
           future: _futurePokemon,
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting && pokemonProvider.listPokemon.isEmpty) {
+            if (snapshot.connectionState == ConnectionState.waiting || pokemonProvider.listPokemon.isEmpty) {
               return Center(child: Image.asset('assets/loading_pokeball.gif'));
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (pokemonProvider.listPokemon.isEmpty) {
-              return const Center(child: Text('No se encontraron Pokémon.'));
             } else {
               return HorizontalSwipper(size: size, lista:PokemonPreferences.getAllFavouritePokemon(pokemonProvider), titulo: 'Favoritos', vinculo: null);
             }
@@ -175,7 +160,7 @@ class HorizontalSwipper extends StatelessWidget {
         crossAxisAlignment:  CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: SwipperHeader(titulo: titulo, vinculo: vinculo),
             ),
           Expanded(
@@ -187,12 +172,19 @@ class HorizontalSwipper extends StatelessWidget {
                 var pokemon = lista[index];
 
                 if (lista is List<Pokemon>) {
-                  return PokemonCard(
+                  if (pokemon.data.id >= 20) { //expandir y agregar algun limite asi no se repite siempre
+                    return const SizedBox(
+                      child: Text('Ver mas'),
+                    );
+                  }
+                  else {
+                    return PokemonCard(
                     id: pokemon.data.id,
                     name: pokemon.data.name,
                     sprite: pokemon.data.sprite,
                     xp: pokemon.data.xp,
                   );
+                  }
                 }
 
                 if (lista is List<List<dynamic>>) {

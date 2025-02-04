@@ -68,8 +68,6 @@ class _PokemonListState extends State<PokemonList> {
               return Center(child: Image.asset('assets/loading_pokeball.gif'));
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (pokemonProvider.listPokemon.isEmpty) {
-              return const Center(child: Text('No se encontraron Pokémon.'));
             } else {
               return GridView.count(
                 physics: const BouncingScrollPhysics(),

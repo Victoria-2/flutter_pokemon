@@ -43,7 +43,8 @@ class PokemonProvider extends ChangeNotifier {
             listPokemon.add(pokemon);
           }
         }));
-        
+        listPokemon.sort((a, b) => a.data.id.compareTo(b.data.id));
+
         offset += 10;
         isLoaded = true;
       } else {
