@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class PokemonList extends StatefulWidget {
   final Pokemon? pokemon;
-  
+
   const PokemonList({super.key, this.pokemon});
 
   @override
@@ -24,18 +24,22 @@ class _PokemonListState extends State<PokemonList> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      final pokemonProvider = Provider.of<PokemonProvider>(context, listen: false);
+      final pokemonProvider =
+          Provider.of<PokemonProvider>(context, listen: false);
       setState(() {
         _futurePokemon = pokemonProvider.getPokemon();
       });
     });
-    
+
     scrollController.addListener(() {
-      final pokemonProvider = Provider.of<PokemonProvider>(context, listen: false);
-      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent && !pokemonProvider.isLoading) {
+      final pokemonProvider =
+          Provider.of<PokemonProvider>(context, listen: false);
+      if (scrollController.position.pixels >=
+              scrollController.position.maxScrollExtent &&
+          !pokemonProvider.isLoading) {
         print('Final pokemones. Cargando ...');
         setState(() {
-         _futurePokemon = pokemonProvider.getPokemon();
+          _futurePokemon = pokemonProvider.getPokemon();
         });
       }
     });
@@ -44,13 +48,13 @@ class _PokemonListState extends State<PokemonList> {
   @override
   Widget build(BuildContext context) {
     final pokemonProvider = Provider.of<PokemonProvider>(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Pokedex', 
+          'Pokedex',
           style: GoogleFonts.pressStart2p(fontSize: 16),
-          ),
+        ),
         centerTitle: true,
         leadingWidth: 40,
         toolbarHeight: 80,
@@ -64,7 +68,8 @@ class _PokemonListState extends State<PokemonList> {
         child: FutureBuilder<void>(
           future: _futurePokemon,
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting && pokemonProvider.listPokemon.isEmpty) {
+            if (snapshot.connectionState == ConnectionState.waiting &&
+                pokemonProvider.listPokemon.isEmpty) {
               return Center(child: Image.asset('assets/loading_pokeball.gif'));
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
@@ -76,7 +81,8 @@ class _PokemonListState extends State<PokemonList> {
                       physics: const BouncingScrollPhysics(),
                       controller: scrollController,
                       crossAxisCount: 2,
-                      children: List.generate(pokemonProvider.listPokemon.length, (index) {
+                      children: List.generate(
+                          pokemonProvider.listPokemon.length, (index) {
                         var pokemon = pokemonProvider.listPokemon[index];
                         return PokemonCard(
                           id: pokemon.data.id,
@@ -93,7 +99,8 @@ class _PokemonListState extends State<PokemonList> {
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: Center(
-                        child: Image.asset('assets/loading_pokeball.gif', height: 50, width: 50),
+                        child: Image.asset('assets/loading_pokeball.gif',
+                            height: 50, width: 50),
                       ),
                     ),
                 ],

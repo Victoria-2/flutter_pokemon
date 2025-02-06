@@ -43,7 +43,7 @@ class PokemonListScreenState extends State<PokemonListScreen> {
   }
 
   Future<void> _fetchPokemons() async {
-    final pokemons = await _apiService.getAllPokemon(); 
+    final pokemons = await _apiService.getAllPokemon();
     setState(() {
       _pokemons = pokemons;
       _isLoading = false;
@@ -56,7 +56,6 @@ class PokemonListScreenState extends State<PokemonListScreen> {
       appBar: AppBar(
         title: const Text('Lista de Pokémon'),
       ),
-      
       drawer: Menu(),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -65,7 +64,7 @@ class PokemonListScreenState extends State<PokemonListScreen> {
               itemBuilder: (context, index) {
                 final pokemon = _pokemons[index];
                 final type = pokemon['type'];
-                final color = typeColors[type] ?? Colors.grey; 
+                final color = typeColors[type] ?? Colors.grey;
 
                 return PokemonCard(
                   name: pokemon['name'],

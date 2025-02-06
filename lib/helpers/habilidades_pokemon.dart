@@ -1,11 +1,10 @@
-import 'dart:convert'; 
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http; 
+import 'package:http/http.dart' as http;
 
 class PokemonApiService {
   static const String _baseUrl = 'https://pokeapi.co/api/v2';
 
-  
   Future<List<String>> getPokemonMoves() async {
     final url = Uri.parse('$_baseUrl/move?limit=50');
     try {
@@ -20,13 +19,11 @@ class PokemonApiService {
         throw Exception('Error al obtener los movimientos');
       }
     } catch (e) {
-      if (kDebugMode) {
-      }
+      if (kDebugMode) {}
       return [];
     }
   }
 
-  
   Future<Map<String, dynamic>> getMoveById(int id) async {
     final url = Uri.parse('$_baseUrl/move/$id');
     try {
@@ -45,7 +42,6 @@ class PokemonApiService {
     }
   }
 
-  
   Future<List<Map<String, dynamic>>> getMovesByType(String type) async {
     final url = Uri.parse('$_baseUrl/move?limit=100');
     try {
@@ -76,48 +72,45 @@ class PokemonApiService {
       return [];
     }
   }
-  
 
-Future<List<Map<String, dynamic>>> getAllPokemon() async {
-  final url = Uri.parse('https://pokeapi.co/api/v2/pokemon?limit=100');
-  try {
-    final response = await http.get(url);
+  Future<List<Map<String, dynamic>>> getAllPokemon() async {
+    final url = Uri.parse('https://pokeapi.co/api/v2/pokemon?limit=100');
+    try {
+      final response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final List results = data['results'];
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List results = data['results'];
 
-      
-      final detailedPokemon = await Future.wait(results.map((pokemon) async {
-        final detailResponse = await http.get(Uri.parse(pokemon['url']));
-        if (detailResponse.statusCode == 200) {
-          final detailData = jsonDecode(detailResponse.body);
-          return {
-            'name': detailData['name'],
-            'type': detailData['types'][0]['type']['name'],
-            'number': detailData['id'],
-            'image': detailData['sprites']['front_default'],
-            'moves': (detailData['moves'] as List)
-                .map((move) => move['move']['name'].toString())
-                .toList(),
-          };
-        }
-        return null; 
-      }));
+        final detailedPokemon = await Future.wait(results.map((pokemon) async {
+          final detailResponse = await http.get(Uri.parse(pokemon['url']));
+          if (detailResponse.statusCode == 200) {
+            final detailData = jsonDecode(detailResponse.body);
+            return {
+              'name': detailData['name'],
+              'type': detailData['types'][0]['type']['name'],
+              'number': detailData['id'],
+              'image': detailData['sprites']['front_default'],
+              'moves': (detailData['moves'] as List)
+                  .map((move) => move['move']['name'].toString())
+                  .toList(),
+            };
+          }
+          return null;
+        }));
 
-      
-      return detailedPokemon
-          .where((pokemon) => pokemon != null) 
-          .cast<Map<String, dynamic>>() 
-          .toList();
-    } else {
-      throw Exception('Error al obtener Pokémon');
+        return detailedPokemon
+            .where((pokemon) => pokemon != null)
+            .cast<Map<String, dynamic>>()
+            .toList();
+      } else {
+        throw Exception('Error al obtener Pokémon');
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error: $e');
+      }
+      return [];
     }
-  } catch (e) {
-    if (kDebugMode) {
-      print('Error: $e');
-    }
-    return [];
   }
-}
 }

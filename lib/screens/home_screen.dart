@@ -13,13 +13,12 @@ import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   final Pokemon? pokemon;
-  
+
   const HomeScreen({super.key, this.pokemon});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
-
 
 class _HomeScreenState extends State<HomeScreen> {
   Future<void> _futurePokemon = Future.value();
@@ -28,14 +27,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      final pokemonProvider = Provider.of<PokemonProvider>(context, listen: false);
+      final pokemonProvider =
+          Provider.of<PokemonProvider>(context, listen: false);
       setState(() {
         _futurePokemon = pokemonProvider.getPokemon();
       });
     });
-
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -43,66 +41,77 @@ class _HomeScreenState extends State<HomeScreen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Pokedex', 
-          style: GoogleFonts.pressStart2p(fontSize: 16),
+        appBar: AppBar(
+          title: Text(
+            'Pokedex',
+            style: GoogleFonts.pressStart2p(fontSize: 16),
           ),
-        centerTitle: true,
-        leadingWidth: 40,
-        toolbarHeight: 80,
-        backgroundColor: Colors.red[400],
-        shadowColor: Colors.purple[400],
-        elevation: 5,
-      ),
-      drawer: Menu(),
-      body:  SingleChildScrollView(
-        child: Column(
-        children: [
-          CarusselImagenes(size: size),
-          const Divider(thickness: 3),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: 
-              FutureBuilder<void>(
-          future: _futurePokemon,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting || pokemonProvider.listPokemon.isEmpty) {
-              return Center(child: Image.asset('assets/loading_pokeball.gif'));
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else {
-              return HorizontalSwipper( size: size, lista: pokemonProvider.listPokemon, titulo: 'Lista de Pokemones', vinculo: const PokemonList());
-            }
-          },
+          centerTitle: true,
+          leadingWidth: 40,
+          toolbarHeight: 80,
+          backgroundColor: Colors.red[400],
+          shadowColor: Colors.purple[400],
+          elevation: 5,
         ),
-            ),
-            const Divider(thickness: 3),
-            const Padding(
-              padding: EdgeInsets.all(10),
-              child: SwipperHeader(titulo: 'Habilidades', vinculo: PokemonListScreen())),
+        drawer: Menu(),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              CarusselImagenes(size: size),
               const Divider(thickness: 3),
-          Padding( 
-            padding: const EdgeInsets.all(10), 
-            child:
-            FutureBuilder<void>(
-          future: _futurePokemon,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting || pokemonProvider.listPokemon.isEmpty) {
-              return Center(child: Image.asset('assets/loading_pokeball.gif'));
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else {
-              return HorizontalSwipper(size: size, lista:PokemonPreferences.getAllFavouritePokemon(pokemonProvider), titulo: 'Favoritos', vinculo: null);
-            }
-          },
-        ),
-            ),
-            const SizedBox(height: 20)
-        ],
-        ),
-      )
-    );
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: FutureBuilder<void>(
+                  future: _futurePokemon,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting ||
+                        pokemonProvider.listPokemon.isEmpty) {
+                      return Center(
+                          child: Image.asset('assets/loading_pokeball.gif'));
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      return HorizontalSwipper(
+                          size: size,
+                          lista: pokemonProvider.listPokemon,
+                          titulo: 'Lista de Pokemones',
+                          vinculo: const PokemonList());
+                    }
+                  },
+                ),
+              ),
+              const Divider(thickness: 3),
+              const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: SwipperHeader(
+                      titulo: 'Habilidades', vinculo: PokemonListScreen())),
+              const Divider(thickness: 3),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: FutureBuilder<void>(
+                  future: _futurePokemon,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting ||
+                        pokemonProvider.listPokemon.isEmpty) {
+                      return Center(
+                          child: Image.asset('assets/loading_pokeball.gif'));
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      return HorizontalSwipper(
+                          size: size,
+                          lista: PokemonPreferences.getAllFavouritePokemon(
+                              pokemonProvider),
+                          titulo: 'Favoritos',
+                          vinculo: null);
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(height: 20)
+            ],
+          ),
+        ));
   }
 }
 
@@ -118,23 +127,21 @@ class CarusselImagenes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
-          items: [
-            // aca van las rutas de las imagenes, fijarme is puedo ponerle el loading
-            Image.asset('assets/logo.png'),
-            Image.asset('assets/icon_pokeball.png'),
-          ],
-          options: CarouselOptions(
-            height: size.height * 0.30, 
-            enlargeCenterPage: true,
-            autoPlay: true,
-            enableInfiniteScroll: true,
-            autoPlayInterval: Duration(seconds: 3),
-            viewportFraction: 0.8, 
-          )
-    );
+        items: [
+          // aca van las rutas de las imagenes, fijarme is puedo ponerle el loading
+          Image.asset('assets/logo.png'),
+          Image.asset('assets/icon_pokeball.png'),
+        ],
+        options: CarouselOptions(
+          height: size.height * 0.30,
+          enlargeCenterPage: true,
+          autoPlay: true,
+          enableInfiniteScroll: true,
+          autoPlayInterval: Duration(seconds: 3),
+          viewportFraction: 0.8,
+        ));
   }
 }
-
 
 // swippers
 class HorizontalSwipper extends StatelessWidget {
@@ -154,51 +161,48 @@ class HorizontalSwipper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isLonger = lista.length > 10;
-    
+
     return SizedBox(
       width: double.infinity,
       height: size.height * 0.35,
       child: Column(
-        crossAxisAlignment:  CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SwipperHeader(titulo: titulo, vinculo: vinculo),
-            ),
+          ),
           Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemCount: 10 + (isLonger ? 1 : 0),
-              itemBuilder: (context, index) {
+              child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            itemCount: 10 + (isLonger ? 1 : 0),
+            itemBuilder: (context, index) {
+              if (isLonger && index == 10) {
+                return IsLongerCard();
+              }
 
-                if (isLonger && index == 10) {
-                  return IsLongerCard();
-                }
+              var pokemon = lista[index];
 
-                var pokemon = lista[index];
+              if (lista is List<Pokemon>) {
+                return PokemonCard(
+                  id: pokemon.data.id,
+                  name: pokemon.data.name,
+                  sprite: pokemon.data.sprite,
+                  xp: pokemon.data.xp,
+                );
+              }
 
-                if (lista is List<Pokemon>) {
-                  return PokemonCard(
-                    id: pokemon.data.id,
-                    name: pokemon.data.name,
-                    sprite: pokemon.data.sprite,
-                    xp: pokemon.data.xp,
-                  );
-                }
-
-                if (lista is List<List<dynamic>>) {
-                  return PokemonCard(
-                    id: pokemon[0],
-                    name: pokemon[1],
-                    sprite: pokemon[3],
-                    xp: pokemon[2],
-                  );
-                }
-                
-              },
-            )
-            )
+              if (lista is List<List<dynamic>>) {
+                return PokemonCard(
+                  id: pokemon[0],
+                  name: pokemon[1],
+                  sprite: pokemon[3],
+                  xp: pokemon[2],
+                );
+              }
+            },
+          ))
         ],
       ),
     );
@@ -206,7 +210,6 @@ class HorizontalSwipper extends StatelessWidget {
 }
 
 class SwipperHeader extends StatelessWidget {
-
   const SwipperHeader({
     super.key,
     required this.titulo,
@@ -224,16 +227,16 @@ class SwipperHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(titulo, style: GoogleFonts.pressStart2p(fontSize: 12)),
-         if (vinculo != null)
-         ElevatedButton(
-          onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => vinculo!),
-        );
-      },
-          child: Text('Ver todos', style: GoogleFonts.pressStart2p(fontSize: 8))
-        ),
+        if (vinculo != null)
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => vinculo!),
+                );
+              },
+              child: Text('Ver todos',
+                  style: GoogleFonts.pressStart2p(fontSize: 8))),
       ],
     );
   }
@@ -259,20 +262,19 @@ class IsLongerCard extends StatelessWidget {
         elevation: 10,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Ver más',
-                    style: GoogleFonts.pressStart2p(fontSize: 14),
-                  ),
-                  Icon(
-                    Icons.arrow_forward,
-                    size: 30,
-                    color: Colors.purple[400],
-                  ),
-                ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Ver más',
+                style: GoogleFonts.pressStart2p(fontSize: 14),
+              ),
+              Icon(
+                Icons.arrow_forward,
+                size: 30,
+                color: Colors.purple[400],
+              ),
+            ],
           ),
         ),
       ),

@@ -25,8 +25,8 @@ class PokemonProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final url = Uri.https('tp-api-pokemon.onrender.com',
-          '/api/v1/pokemons/', {'offset': '$offset', 'limit': '10'});
+      final url = Uri.https('tp-api-pokemon.onrender.com', '/api/v1/pokemons/',
+          {'offset': '$offset', 'limit': '10'});
 
       final response = await http.get(url);
       print("Respuesta de la API: ${response.body}");
@@ -59,20 +59,18 @@ class PokemonProvider extends ChangeNotifier {
 
   Future<Pokemon?> getPokemonById(int id) async {
     try {
-      final url = Uri.https(
-          'tp-api-pokemon.onrender.com', '/api/v1/pokemons/$id');
+      final url =
+          Uri.https('tp-api-pokemon.onrender.com', '/api/v1/pokemons/$id');
       print(url);
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
         print('.....${Pokemon.fromJson(json.decode(response.body))}');
         return Pokemon.fromJson(json.decode(response.body));
-      
       } else {
         print('Error en el servicio: ${response.statusCode}');
         return null;
       }
-
     } catch (e) {
       print('Error al realizar el request 2: $e');
       return null;

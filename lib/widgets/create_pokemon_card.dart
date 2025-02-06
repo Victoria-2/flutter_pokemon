@@ -9,13 +9,19 @@ class PokemonCard extends StatefulWidget {
   String sprite;
   int xp;
 
-  PokemonCard({super.key, required this.id, required this.name, required this.sprite, required this.xp});
+  PokemonCard(
+      {super.key,
+      required this.id,
+      required this.name,
+      required this.sprite,
+      required this.xp});
 
   @override
   State<PokemonCard> createState() => _PokemonCardState();
 }
 
-class _PokemonCardState extends State<PokemonCard> with TickerProviderStateMixin {
+class _PokemonCardState extends State<PokemonCard>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
@@ -35,28 +41,29 @@ class _PokemonCardState extends State<PokemonCard> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        _animationController.forward().then((_) {
-          _animationController.reverse();
-        });
-        Future.delayed(const Duration(milliseconds: 200), () {
-          _PokemonAlert(context, widget.id, widget.name, widget.sprite, widget.xp);
-        });
-      },
-      child: AnimatedBuilder(
-        animation: _scaleAnimation,
-        builder: (context, child) {
-          return Transform.scale(
-            scale: _scaleAnimation.value,
-            child: child,
-          );
+        onTap: () {
+          _animationController.forward().then((_) {
+            _animationController.reverse();
+          });
+          Future.delayed(const Duration(milliseconds: 200), () {
+            _PokemonAlert(
+                context, widget.id, widget.name, widget.sprite, widget.xp);
+          });
         },
-      child: Card(
-          shadowColor: Colors.purple[400],
-          elevation: 10,
-          child:  Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
+        child: AnimatedBuilder(
+          animation: _scaleAnimation,
+          builder: (context, child) {
+            return Transform.scale(
+              scale: _scaleAnimation.value,
+              child: child,
+            );
+          },
+          child: Card(
+            shadowColor: Colors.purple[400],
+            elevation: 10,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -65,8 +72,8 @@ class _PokemonCardState extends State<PokemonCard> with TickerProviderStateMixin
                         '#${widget.id}',
                         textAlign: TextAlign.start,
                         style: GoogleFonts.pressStart2p(),
-                        ),
-                        _buildFavorite(widget.id),
+                      ),
+                      _buildFavorite(widget.id),
                     ],
                   ),
                   FadeInImage.assetNetwork(
@@ -81,44 +88,41 @@ class _PokemonCardState extends State<PokemonCard> with TickerProviderStateMixin
                       width: 150,
                       height: 45,
                       decoration: BoxDecoration(
-                        color: Colors.blue[200],
-                        border: Border.all(
-                      ),
-                      borderRadius: BorderRadius.circular(10)
-                  ),
+                          color: Colors.blue[200],
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10)),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             widget.name,
                             style: GoogleFonts.pressStart2p(),
-                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ],
               ),
+            ),
           ),
-        ),
-      )
-    );
+        ));
   }
 }
 
-void _PokemonAlert(BuildContext context, int id, String name, String sprite, int xp) {
-   showDialog(
+void _PokemonAlert(
+    BuildContext context, int id, String name, String sprite, int xp) {
+  showDialog(
     context: context,
     builder: (BuildContext context) {
       return PokemonAlert(
-        id: id,  
+        id: id,
         name: name,
         sprite: sprite,
         xp: xp,
       );
     },
   );
-
 }
 
 Widget _buildFavorite(int id) {
@@ -130,4 +134,3 @@ Widget _buildFavorite(int id) {
     size: 30,
   );
 }
-  
