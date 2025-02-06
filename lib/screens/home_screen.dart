@@ -205,6 +205,41 @@ class HorizontalSwipper extends StatelessWidget {
   }
 }
 
+class SwipperHeader extends StatelessWidget {
+
+  const SwipperHeader({
+    super.key,
+    required this.titulo,
+    required this.vinculo,
+  });
+
+  final String titulo;
+  final Widget? vinculo;
+
+  //agregarlo de los size y extended
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(titulo, style: GoogleFonts.pressStart2p(fontSize: 12)),
+         if (vinculo != null)
+         ElevatedButton(
+          onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => vinculo!),
+        );
+      },
+          child: Text('Ver todos', style: GoogleFonts.pressStart2p(fontSize: 8))
+        ),
+      ],
+    );
+  }
+}
+
+// card para mostrar si hay +10 pokemones
 class IsLongerCard extends StatelessWidget {
   const IsLongerCard({
     super.key,
@@ -241,39 +276,6 @@ class IsLongerCard extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class SwipperHeader extends StatelessWidget {
-  const SwipperHeader({
-    super.key,
-    required this.titulo,
-    required this.vinculo,
-  });
-
-  final String titulo;
-  final Widget? vinculo;
-
-  //agregarlo de los size y extended
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(titulo, style: GoogleFonts.pressStart2p(fontSize: 12)),
-         if (vinculo != null)
-         ElevatedButton(
-          onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => vinculo!),
-        );
-      },
-          child: Text('Ver todos', style: GoogleFonts.pressStart2p(fontSize: 8))
-        ),
-      ],
     );
   }
 }

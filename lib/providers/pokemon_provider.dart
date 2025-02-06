@@ -34,8 +34,7 @@ class PokemonProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         final pokeResponse = pokeResponseFromJson(response.body);
 
-        // Cargar datos en paralelo
-        await Future.wait(pokeResponse.data.results.map((result) async { // Línea 36
+        await Future.wait(pokeResponse.data.results.map((result) async {
           final pokemonId = _extraerIdUrl(result.url);
           final pokemon = await getPokemonById(pokemonId);
 

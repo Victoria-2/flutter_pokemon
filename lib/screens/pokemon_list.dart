@@ -69,19 +69,34 @@ class _PokemonListState extends State<PokemonList> {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else {
-              return GridView.count(
-                physics: const BouncingScrollPhysics(),
-                controller: scrollController,
-                crossAxisCount: 2,
-                children: List.generate(pokemonProvider.listPokemon.length, (index) {
-                  var pokemon = pokemonProvider.listPokemon[index];
-                  return PokemonCard(
-                    id: pokemon.data.id,
-                    name: pokemon.data.name,
-                    sprite: pokemon.data.sprite,
-                    xp: pokemon.data.xp,
-                  );
-                }),
+              return Column(
+                children: [
+                  Expanded(
+                    child: GridView.count(
+                      physics: const BouncingScrollPhysics(),
+                      controller: scrollController,
+                      crossAxisCount: 2,
+                      children: List.generate(pokemonProvider.listPokemon.length, (index) {
+                        var pokemon = pokemonProvider.listPokemon[index];
+                        return PokemonCard(
+                          id: pokemon.data.id,
+                          name: pokemon.data.name,
+                          sprite: pokemon.data.sprite,
+                          xp: pokemon.data.xp,
+                        );
+                      }),
+                    ),
+                  ),
+
+                  // pequeño gif de carga cuando se traen mas pokemon
+                  if (pokemonProvider.isLoading)
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Center(
+                        child: Image.asset('assets/loading_pokeball.gif', height: 50, width: 50),
+                      ),
+                    ),
+                ],
               );
             }
           },
