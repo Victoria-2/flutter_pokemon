@@ -153,6 +153,8 @@ class HorizontalSwipper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLonger = lista.length > 10;
+    
     return SizedBox(
       width: double.infinity,
       height: size.height * 0.35,
@@ -167,24 +169,22 @@ class HorizontalSwipper extends StatelessWidget {
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemCount: lista.length,
+              itemCount: 10 + (isLonger ? 1 : 0),
               itemBuilder: (context, index) {
+
+                if (isLonger && index == 10) {
+                  return IsLongerCard();
+                }
+
                 var pokemon = lista[index];
 
                 if (lista is List<Pokemon>) {
-                  if (pokemon.data.id >= 20) { //expandir y agregar algun limite asi no se repite siempre
-                    return const SizedBox(
-                      child: Text('Ver mas'),
-                    );
-                  }
-                  else {
-                    return PokemonCard(
+                  return PokemonCard(
                     id: pokemon.data.id,
                     name: pokemon.data.name,
                     sprite: pokemon.data.sprite,
                     xp: pokemon.data.xp,
                   );
-                  }
                 }
 
                 if (lista is List<List<dynamic>>) {
@@ -200,6 +200,46 @@ class HorizontalSwipper extends StatelessWidget {
             )
             )
         ],
+      ),
+    );
+  }
+}
+
+class IsLongerCard extends StatelessWidget {
+  const IsLongerCard({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const PokemonList()),
+        );
+      },
+      child: Card(
+        shadowColor: Colors.purple[400],
+        elevation: 10,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: 
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Ver más',
+                    style: GoogleFonts.pressStart2p(fontSize: 14),
+                  ),
+                  Icon(
+                    Icons.arrow_forward,
+                    size: 30,
+                    color: Colors.purple[400],
+                  ),
+                ],
+          ),
+        ),
       ),
     );
   }
