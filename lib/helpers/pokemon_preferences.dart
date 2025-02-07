@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:flutter_pokemon/models/pokemon_model.dart';
 import 'package:flutter_pokemon/providers/pokemon_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

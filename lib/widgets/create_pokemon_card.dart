@@ -3,6 +3,7 @@ import 'package:flutter_pokemon/helpers/pokemon_preferences.dart';
 import 'package:flutter_pokemon/widgets/create_poke_alert.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// ignore: must_be_immutable
 class PokemonCard extends StatefulWidget {
   int id;
   String name;
@@ -47,7 +48,12 @@ class _PokemonCardState extends State<PokemonCard>
           });
           Future.delayed(const Duration(milliseconds: 200), () {
             _PokemonAlert(
-                context, widget.id, widget.name, widget.sprite, widget.xp);
+                // ignore: use_build_context_synchronously
+                context,
+                widget.id,
+                widget.name,
+                widget.sprite,
+                widget.xp);
           });
         },
         child: AnimatedBuilder(

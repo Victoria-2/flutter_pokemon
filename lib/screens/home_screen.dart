@@ -181,11 +181,10 @@ class HorizontalSwipper extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: 10 + (isLonger ? 1 : 0),
             itemBuilder: (context, index) {
-              
               if (lista is List<Pokemon>) {
                 if (isLonger && index == 10) {
-                return IsLongerCard();
-              }
+                  return IsLongerCard();
+                }
                 var pokemon = lista[index];
                 return PokemonCard(
                   id: pokemon.data.id,
@@ -196,9 +195,9 @@ class HorizontalSwipper extends StatelessWidget {
               }
 
               if (lista is List<List<dynamic>>) {
-                 if (index >= lista.length) {
-                return SizedBox.shrink();
-              }
+                if (index >= lista.length) {
+                  return SizedBox.shrink();
+                }
                 var pokemon = lista[index];
                 return PokemonCard(
                   id: pokemon[0],
@@ -207,6 +206,7 @@ class HorizontalSwipper extends StatelessWidget {
                   xp: pokemon[2],
                 );
               }
+              return null;
             },
           ))
         ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokemon/helpers/pokemon_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// ignore: must_be_immutable
 class PokemonAlert extends StatefulWidget {
   int id;
   String name;

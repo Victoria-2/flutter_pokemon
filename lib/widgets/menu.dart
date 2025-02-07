@@ -61,9 +61,7 @@ class Menu extends StatelessWidget {
 }
 
 class _MenuHeader extends StatelessWidget {
-  const _MenuHeader({
-    Key? key,
-  }) : super(key: key);
+  const _MenuHeader();
 
   @override
   Widget build(BuildContext context) {
