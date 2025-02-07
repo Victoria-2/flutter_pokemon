@@ -22,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Future<void> _futurePokemon = Future.value();
+  bool _pokemonLoaded = false;
 
   @override
   void initState() {
@@ -29,9 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       final pokemonProvider =
           Provider.of<PokemonProvider>(context, listen: false);
-      setState(() {
-        _futurePokemon = pokemonProvider.getPokemon();
-      });
+      if (!_pokemonLoaded) {
+        setState(() {
+          _futurePokemon = pokemonProvider.getPokemon();
+          _pokemonLoaded = true;
+        });
+      }
     });
   }
 
@@ -128,7 +132,6 @@ class CarusselImagenes extends StatelessWidget {
   Widget build(BuildContext context) {
     return CarouselSlider(
         items: [
-          // aca van las rutas de las imagenes, fijarme is puedo ponerle el loading
           Image.asset('assets/logo.png'),
           Image.asset('assets/icon_pokeball.png'),
         ],
@@ -160,7 +163,7 @@ class HorizontalSwipper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isLonger = lista.length > 10;
+    bool isLonger = lista.length >= 10;
 
     return SizedBox(
       width: double.infinity,
@@ -178,13 +181,12 @@ class HorizontalSwipper extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: 10 + (isLonger ? 1 : 0),
             itemBuilder: (context, index) {
-              if (isLonger && index == 10) {
+              
+              if (lista is List<Pokemon>) {
+                if (isLonger && index == 10) {
                 return IsLongerCard();
               }
-
-              var pokemon = lista[index];
-
-              if (lista is List<Pokemon>) {
+                var pokemon = lista[index];
                 return PokemonCard(
                   id: pokemon.data.id,
                   name: pokemon.data.name,
@@ -194,6 +196,10 @@ class HorizontalSwipper extends StatelessWidget {
               }
 
               if (lista is List<List<dynamic>>) {
+                 if (index >= lista.length) {
+                return SizedBox.shrink();
+              }
+                var pokemon = lista[index];
                 return PokemonCard(
                   id: pokemon[0],
                   name: pokemon[1],
