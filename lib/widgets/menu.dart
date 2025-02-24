@@ -5,9 +5,21 @@ class Menu extends StatelessWidget {
   final List<Map<String, String>> _menuItems = <Map<String, String>>[
     {'route': 'home', 'title': 'Home', 'subtitle': 'Pagina Principal'},
     //en route va como esta escrito en el home
-    {'route': 'pokemon_list', 'title': 'Pokemones', 'subtitle': 'Lista paginada'},
-    {'route': 'habilidades_screen', 'title': 'Habilidades', 'subtitle': 'Movimientos'},
-    {'route': 'profile_screen', 'title': 'Perfil', 'subtitle': 'Editar tus datos'},
+    {
+      'route': 'pokemon_list',
+      'title': 'Pokemones',
+      'subtitle': 'Lista paginada'
+    },
+    {
+      'route': 'habilidades_screen',
+      'title': 'Habilidades',
+      'subtitle': 'Movimientos'
+    },
+    {
+      'route': 'profile_screen',
+      'title': 'Perfil',
+      'subtitle': 'Editar tus datos'
+    },
   ];
 
   Menu({super.key});
@@ -33,12 +45,12 @@ class Menu extends StatelessWidget {
                         subtitle: Text(item['subtitle'] ?? '',
                             style: GoogleFonts.pressStart2p(fontSize: 11)),
                         // leading: const Image(image: AssetImage('assets/icon_pokeball.png')), /* Por algun motivo me larga error, creo que es el tamaño del png */
-                        leading: const Icon(Icons.arrow_right), //icono al inicio
+                        leading:
+                            const Icon(Icons.arrow_right), //icono al inicio
                         // trailing: const Icon(Icons.arrow_right), // icono al final
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, item['route']!);
-
                         },
                       ))
                   .toList())
@@ -49,9 +61,7 @@ class Menu extends StatelessWidget {
 }
 
 class _MenuHeader extends StatelessWidget {
-  const _MenuHeader({
-    Key? key,
-  }) : super(key: key);
+  const _MenuHeader();
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +69,9 @@ class _MenuHeader extends StatelessWidget {
       padding: EdgeInsets.zero,
       child: Stack(children: [
         const Positioned(
-          child: FadeInImage(placeholder: AssetImage('assets/loading_pokeball.gif'), image: AssetImage('assets/logo.png')),
+          child: FadeInImage(
+              placeholder: AssetImage('assets/loading_pokeball.gif'),
+              image: AssetImage('assets/logo.png')),
         ),
         Container(
           alignment: Alignment.bottomRight,

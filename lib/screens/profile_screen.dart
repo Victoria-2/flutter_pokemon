@@ -14,14 +14,14 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Perfil'),
       ),
-      drawer: Menu(), 
+      drawer: Menu(),
       body: Column(
         children: [
           SwitchListTile(
             title: const Text('Tema oscuro'),
             value: themeProvider.isDarkMode,
             onChanged: (bool value) {
-              themeProvider.toggleTheme(); 
+              themeProvider.toggleTheme();
             },
           ),
         ],
