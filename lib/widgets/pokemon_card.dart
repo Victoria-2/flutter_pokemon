@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_pokemon/screens/screens.dart'; 
+import 'package:flutter_pokemon/screens/screens.dart';
 
 class PokemonCard extends StatelessWidget {
   final String name;
@@ -24,7 +24,6 @@ class PokemonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     String typeSvgPath = 'assets/${type.toLowerCase()}.svg';
 
     return GestureDetector(
@@ -65,7 +64,8 @@ class PokemonCard extends StatelessWidget {
                   width: 80,
                   height: 80,
                   fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.error),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -102,12 +102,11 @@ class PokemonCard extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          
                           Container(
                             width: 24,
                             height: 24,
                             decoration: BoxDecoration(
-                              color: color.withOpacity(0.9), 
+                              color: color.withOpacity(0.9),
                               shape: BoxShape.circle,
                             ),
                             child: Padding(
@@ -115,7 +114,8 @@ class PokemonCard extends StatelessWidget {
                               child: SvgPicture.asset(
                                 typeSvgPath,
                                 fit: BoxFit.contain,
-                                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn), 
+                                colorFilter: const ColorFilter.mode(
+                                    Colors.white, BlendMode.srcIn),
                               ),
                             ),
                           ),

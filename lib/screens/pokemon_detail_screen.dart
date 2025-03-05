@@ -57,31 +57,30 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
   @override
   void initState() {
     super.initState();
-    isFavorite = false; 
+    isFavorite = false;
     apodoController = TextEditingController();
-    _loadPreferences(); 
+    _loadPreferences();
   }
 
   @override
   void dispose() {
-    _saveFavorite(isFavorite);  
-    _saveApodo(apodoController.text); 
-    apodoController.dispose();  
-    super.dispose();  
+    _saveFavorite(isFavorite);
+    _saveApodo(apodoController.text);
+    apodoController.dispose();
+    super.dispose();
   }
 
-  
   Future<void> _loadPreferences() async {
     debugPrint('Obteniendo preferencias...');
     final prefs = await SharedPreferences.getInstance();
     debugPrint('Preferencias obtenidas');
 
     // Debugg porque no me estaba funcionando
-    final bool? isFavoriteStored = prefs.containsKey('${widget.name}_favorite') 
-        ? prefs.getBool('${widget.name}_favorite') 
+    final bool? isFavoriteStored = prefs.containsKey('${widget.name}_favorite')
+        ? prefs.getBool('${widget.name}_favorite')
         : null;
-    final String? apodoStored = prefs.containsKey('${widget.name}_apodo') 
-        ? prefs.getString('${widget.name}_apodo') 
+    final String? apodoStored = prefs.containsKey('${widget.name}_apodo')
+        ? prefs.getString('${widget.name}_apodo')
         : null;
 
     if (isFavoriteStored != null && apodoStored != null) {
@@ -90,18 +89,16 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
       debugPrint('No se encontraron preferencias para ${widget.name}');
     }
 
-    
     if (mounted) {
       setState(() {
-      isFavorite = prefs.getBool('${widget.name}_favorite') ?? false;
-      savedApodo = prefs.getString('${widget.name}_apodo') ?? ''; 
-      apodoController.text = savedApodo ?? '';
+        isFavorite = prefs.getBool('${widget.name}_favorite') ?? false;
+        savedApodo = prefs.getString('${widget.name}_apodo') ?? '';
+        apodoController.text = savedApodo ?? '';
       });
       debugPrint('Cargado: Favorito: $isFavorite, Apodo: $savedApodo');
     }
   }
 
-  
   Future<void> _saveFavorite(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     debugPrint('Guardando para ${widget.name}');
@@ -123,7 +120,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
 
     if (mounted) {
       setState(() {
-        savedApodo = apodo;  
+        savedApodo = apodo;
       });
     }
   }
@@ -153,7 +150,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
               children: [
                 Container(
                   constraints: const BoxConstraints(
-                    maxWidth: 750, 
+                    maxWidth: 750,
                   ),
                   padding: const EdgeInsets.all(16),
                   margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -194,9 +191,9 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                   decoration: const InputDecoration(
                                     hintText: 'Escribe un apodo...',
                                   ),
-                                    onChanged: (value) {
-                                        _saveApodo(value);  
-                                      },
+                                  onChanged: (value) {
+                                    _saveApodo(value);
+                                  },
                                 ),
                               ),
                               const SizedBox(height: 4),
@@ -224,9 +221,9 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                               ),
                               const SizedBox(height: 8),
                               FavoriteCheckbox(
-                                value: isFavorite, 
+                                value: isFavorite,
                                 onChanged: (value) {
-                                  _saveFavorite(value); 
+                                  _saveFavorite(value);
                                 },
                               ),
                             ],
@@ -277,7 +274,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                   ),
                 ),
                 Positioned(
-                  top: -100, 
+                  top: -100,
                   left: 0,
                   right: 0,
                   child: Align(
@@ -292,7 +289,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                   ),
                 ),
                 Positioned(
-                  top: 110, 
+                  top: 110,
                   left: 0,
                   right: 0,
                   child: Column(
